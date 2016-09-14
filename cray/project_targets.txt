@@ -1,0 +1,45 @@
+一个用来发布可以使用与Github Pages博客的静态博客生成器
+
+希望的交互方式：
+与文章相关的：
+cray post new [title]
+cray post list
+cray post delete [title|id]
+
+与页面相关的
+cray frame new [title]
+cray frame list
+cray frame delete [title]
+
+生成测试站点和部署：
+cray test 生成一个_site目录并在其下打开SimpleHTTPServer
+cray deploy
+
+* 需要计算post数量，根据每页post数量生成页数并生成链接
+* 文章先只支持markdown
+* 支持jinja2模板
+* 支持自定义theme，并且在配置项里可改，
+
+_site的内容：
+_site
+|---post
+|---index.html
+|---pages
+	|---2
+		|---index.html
+	|---3
+		|---index.html
+	...
+	|---[max page num]
+		|---index.html
+|---[frame1]
+|---[frame2]
+...
+|---[framen]
+
+TODO:
+* 写一个theme编写指南
+* 支持extension
+* 链接格式不可控
+
+

@@ -243,3 +243,6 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+/cray/craylib/__pycache__
+/cray/env
+/cray/__pycache__
