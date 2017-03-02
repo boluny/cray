@@ -14,6 +14,10 @@
     <RootNamespace>cray</RootNamespace>
     <InterpreterId>{28757a8b-f775-4da2-ba50-0f168722fdfb}</InterpreterId>
     <InterpreterVersion>3.5</InterpreterVersion>
+    <IsWindowsApplication>False</IsWindowsApplication>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
+    <CommandLineArguments>post read 2015-09-18-welcome-to-jekyll.markdown</CommandLineArguments>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -25,10 +29,25 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="cray.py" />
+    <Compile Include="craylib\Frame.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="craylib\FrameManager.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="craylib\GenerateManager.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="craylib\Post.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="craylib\PostManager.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="craylib\ThemeManager.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="craylib\utility.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="craylib\__init__.py">
