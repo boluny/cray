@@ -32,10 +32,12 @@ class Post(object):
 
                 if triple_hyphen == 1:
                     if not line.startswith('-') and not line.startswith('#'):
+                        # let maxsplit set to 1 to just take the first ':' as splitter 
                         attribute_and_value = line.split(':', 1)
                         self._post_meta_data[attribute_and_value[0].strip()] = \
                             attribute_and_value[1].strip()
                 elif triple_hyphen == 2:
+                    # if the second '---\n' is encountered, it means meta part is over
                     break
 
                 line = post_fd.readline()

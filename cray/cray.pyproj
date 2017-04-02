@@ -29,10 +29,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="cray.py" />
-    <Compile Include="craylib\Frame.py">
+    <Compile Include="craylib\Page.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="craylib\FrameManager.py">
+    <Compile Include="craylib\PageManager.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="craylib\GenerateManager.py">
@@ -51,6 +51,15 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="craylib\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="yatest\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="cray_test.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="yatest\testpost.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -72,9 +81,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="craylib\" />
+    <Folder Include="yatest\" />
     <Folder Include="sample_site\" />
     <Folder Include="sample_site\_theme\" />
-    <Folder Include="sample_site\_frame\" />
+    <Folder Include="sample_site\_page\" />
     <Folder Include="sample_site\_post\" />
   </ItemGroup>
   <PropertyGroup>

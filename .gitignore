@@ -247,3 +247,4 @@ ModelManifest.xml
 /cray/env
 /cray/__pycache__
 /cray/sample_site/
+/cray/yatest/__pycache__

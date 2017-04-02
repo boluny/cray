@@ -16,6 +16,7 @@ def get_logger(name):
     logger = logging.getLogger(name)
     logger.setLevel(logging.DEBUG)
 
+    # Copy following from https://docs.python.org/3/howto/logging.html#logging-advanced-tutorial
     # create console handler and set level to debug
     ch = logging.StreamHandler()
     ch.setLevel(logging.DEBUG)

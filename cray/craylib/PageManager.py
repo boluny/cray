@@ -1,13 +1,13 @@
-from .Frame import Frame
+from craylib.Page import Page
 
-class FrameManager(object):
-    """Manager of Frames"""
+class PageManager(object):
+    """Manager of pages"""
     _init_template = ""
 
     def __init__(self, cmd_params, frame_dir):
-        self._frame_list = []
+        self._page_list = []
         self._cmd_params = cmd_params
-        self._frame_dir = frame_dir
+        self._page_dir = frame_dir
 
     def create(self, file_name):
         pass

@@ -1,4 +1,4 @@
-class Frame(object):
+class Page(object):
     """the frame that shows as pages"""
 
     def __init__(self, file_name):
