@@ -1,5 +1,7 @@
 import os
 import logging
+import http.server
+import socketserver
 from enum import Enum
 
 class RT(Enum):
@@ -31,3 +33,21 @@ def get_logger(name):
     logger.addHandler(ch)
 
     return logger
+
+def start_server(root_dir):
+
+    PORT = 80
+
+    os.chdir(root_dir)
+
+    Handler = http.server.SimpleHTTPRequestHandler
+    httpd = socketserver.TCPServer(("", PORT), Handler)
+    print("serving at port", PORT)
+    httpd.serve_forever()
+
+def trim_quotation_mark(original_str):
+    
+    if original_str.startswith('"') and original_str.endswith('"'):
+        return original_str[1:-1]
+    else:
+        return original_str

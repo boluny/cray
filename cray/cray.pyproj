@@ -17,7 +17,7 @@
     <IsWindowsApplication>False</IsWindowsApplication>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
-    <CommandLineArguments>post read 2015-09-18-welcome-to-jekyll.markdown</CommandLineArguments>
+    <CommandLineArguments>generate</CommandLineArguments>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -36,6 +36,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="craylib\GenerateManager.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="craylib\Parser.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="craylib\Post.py">

@@ -1,5 +1,8 @@
+# -*- coding: utf-8 -*-
 from craylib import utility
+from craylib.Parser import Parser
 import os
+import codecs
 
 _logger = utility.get_logger('cray.post')
 
@@ -24,25 +27,13 @@ class Post(object):
             _logger.warning("specified file %s does not exist.", self._post_file_name)
             return
         triple_hyphen = 0 
-        with open(self._post_file_name, 'r') as post_fd:
-            line = post_fd.readline()
-            while line is not None:
-                if line.startswith('---'):
-                    triple_hyphen += 1
 
-                if triple_hyphen == 1:
-                    if not line.startswith('-') and not line.startswith('#'):
-                        # let maxsplit set to 1 to just take the first ':' as splitter 
-                        attribute_and_value = line.split(':', 1)
-                        self._post_meta_data[attribute_and_value[0].strip()] = \
-                            attribute_and_value[1].strip()
-                elif triple_hyphen == 2:
-                    # if the second '---\n' is encountered, it means meta part is over
-                    break
+        # TODO: handle different file encoding
+        with codecs.open(self._post_file_name, 'r', 'utf-8') as post_fd:
+            whole_content = post_fd.read()
+            pp = Parser(whole_content)
+            self._post_meta_data, self._post_content = pp.parse()
 
-                line = post_fd.readline()
-
-            self._post_content = post_fd.read()
         _logger.debug("meta: %s", self._post_meta_data)
         _logger.debug("content: %s", self._post_content)
         return utility.RT.SUCCESS
