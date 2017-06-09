@@ -248,3 +248,5 @@ ModelManifest.xml
 /cray/__pycache__
 /cray/sample_site/
 /cray/yatest/__pycache__
+/cray/.vscode
+*.pyperf

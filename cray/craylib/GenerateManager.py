@@ -1,17 +1,18 @@
 # -*- coding: utf-8 -*-
+import codecs
+import json
 import os
 import shutil
-import codecs
-import markdown
 from datetime import datetime
-from jinja2 import Template
+
+import markdown
 from jinja2 import FileSystemLoader
 from jinja2.environment import Environment
-from craylib.ThemeManager import ThemeManager
-from craylib.PostManager import PostManager
-from craylib.PageManager import PageManager
-from craylib import utility
 
+from craylib import utility
+from craylib.PageManager import PageManager
+from craylib.PostManager import PostManager
+from craylib.ThemeManager import ThemeManager
 
 _logger = utility.get_logger('cray.GenerateManager')
 
@@ -21,7 +22,12 @@ class GenerateManager(object):
     def __init__(self, root_dir):
         self._root_dir = root_dir
         self.__default_file_name = "index.html"
-        self.__site_dict = {}       
+        self.__site_dict = {}
+        self._tar_dir = ""
+        self._abs_dir = ""
+        self._theme_dir = ""
+        self._post_dir = ""
+        self._page_dir = ""
 
     def set_tar_dir(self, tar_dir):
         self._tar_dir = tar_dir
@@ -47,12 +53,15 @@ class GenerateManager(object):
         if self.__check_validation():
             self.__clear_site()
 
+        if not self.read_config():
+            _logger.error("invalid side configuration file, please check carefully")
+            return
         # main logic:
         # 1.  read theme template
         # 2.  parge posts and pages and save to dict
         # 3.  couple the generated dict with readed templates
 
-        if not hasattr(self, '_theme_dir'):
+        if not self._theme_dir:
             _logger.error("no theme directory")
             return
 
@@ -60,7 +69,7 @@ class GenerateManager(object):
         tm.set_theme('')
         site_template_path = tm.get_template_path()
 
-        if not hasattr(self, '_page_dir'):
+        if not self._page_dir:
             _logger.error("no page directory")
             return
 
@@ -68,7 +77,7 @@ class GenerateManager(object):
         pages = page_manager.get_all_pages()
         self.__site_dict['pages'] = pages
 
-        if not hasattr(self, '_post_dir'):
+        if not self._post_dir:
             _logger.error("no post directory")
             return
 
@@ -79,9 +88,33 @@ class GenerateManager(object):
             self.generate_pages(site_template_path['page'])
             posts_meta = self.generate_posts(site_template_path['post'], posts)
             self.generate_index(site_template_path['index'], posts_meta)
-            
+
+    def read_config(self):
+        "Read and validate configuration file"
+        config_name = os.path.join(self._root_dir, 'config.json')
+        if not os.path.exists(config_name):
+            return False
+
+        with open(config_name, 'r', encoding='utf-8') as conf_fp:
+            config_content = conf_fp.read().replace('\n', ' ').replace('\r', ' ')
+
+        config_dict = json.loads(config_content)
+
+        if config_dict and isinstance(config_dict, dict):
+            self.__site_dict.update(config_dict)
+            return True
+
+        return False
+
+
     def generate_posts(self, post_template_path, posts):
-        if len(posts) == 0 or post_template_path == '':
+        """
+        Generate post HTML pages using the passed in template and posts sequence.\n
+        post_template_path|str: the template path\n
+        posts|list: post sequence which contains all posts metadata and content\n
+        """
+        # use `not posts` rather than `len(posts)` to match PEP8
+        if not posts or post_template_path == '':
             return []
 
         posts_meta = []
@@ -113,7 +146,8 @@ class GenerateManager(object):
                 os.makedirs(os.path.join(self._abs_dir, url_dir))
                 file_path = os.path.join(self._abs_dir, url)
 
-                result = self.__template_helper(post_template_path, post=per_meta, site=self.__site_dict)
+                result = self.__template_helper(post_template_path, \
+                post=per_meta, site=self.__site_dict)
                 with codecs.open(file_path, 'w', 'utf-8') as post_fd:
                     post_fd.write(result)
 
@@ -157,8 +191,3 @@ class GenerateManager(object):
         result = template.render(kwargs)
 
         return result
-        
-
-
-
-

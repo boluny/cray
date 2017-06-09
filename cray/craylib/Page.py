@@ -35,7 +35,7 @@ class Page(object):
 
         pure_file_name = os.path.split(self.__file_name)[1].rpartition('.')[0]
         # The solution is ugly here but the leading slash mark is needed
-        # Call for improvement for this 
+        # Call for improvement for this
         ret_dict['url_dir'] = pure_file_name + os.sep
         ret_dict['url'] = os.sep + pure_file_name + os.sep
         ret_dict['content'] = self.__content

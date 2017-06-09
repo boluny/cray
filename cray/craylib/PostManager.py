@@ -16,7 +16,7 @@ class PostManager(object):
         """
         Execute for the specified command e.g. new/list
         """
-        
+
         self.__params = params
         _logger.debug('params: %s', params)
 
@@ -25,8 +25,7 @@ class PostManager(object):
             pp = Post.Post(os.path.join(self.__post_dir, self.__params[1]))
             if pp.parse_file() == utility.RT.SUCCESS:
                 print(pp.get_metadata())
-                print(pp.get_content())               
-        
+                print(pp.get_content())
 
     def create(self, file_name):
         pass
@@ -50,7 +49,6 @@ class PostManager(object):
                     post_list.append(pp)
 
         return post_list
-        
 
 
 

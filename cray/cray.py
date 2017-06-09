@@ -1,10 +1,10 @@
+import os
 from sys import argv
-from jinja2 import Template
 from craylib.PostManager import PostManager
 from craylib.GenerateManager import GenerateManager
 from craylib.utility import start_server
 
-import os
+
 
 TEST_SITE = 'sample_site'
 POST_DIR = '_post'
@@ -30,23 +30,23 @@ if __name__ == '__main__':
         posts_dir = os.path.join(os.getcwd(), TEST_SITE, POST_DIR)
         pm = PostManager(posts_dir)
         pm.execute(argv[2:])
-        
+
     elif argv[1] == 'page':
         pass
     elif len(argv) == 2 and argv[1] == 'generate':
         gm = GenerateManager(os.path.join(os.getcwd(), TEST_SITE))
         gm.set_tar_dir(GENERATED_SITE_DIR)
-        themes_dir = os.path.join(os.getcwd(), TEST_SITE, THEME_DIR)
+        themes_dir = os.path.join(os.getcwd(), TEST_SITE, THEME_DIR, 'simple')
         gm.set_theme_dir(themes_dir)
         gm.set_post_dir(os.path.join(os.getcwd(), TEST_SITE, POST_DIR))
         gm.set_page_dir(os.path.join(os.getcwd(), TEST_SITE, PAGE_DIR))
-        gm.generate_site()      
+        gm.generate_site()
     elif argv[1] == 'preview':
         # call HTTP module to start a server on the site directory
         # python -m http.server 8000
         site_dir = os.path.join(os.getcwd(), TEST_SITE, GENERATED_SITE_DIR)
         start_server(site_dir)
-        
+
     elif argv[1] == 'deploy':
         pass
     else:

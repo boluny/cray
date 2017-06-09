@@ -26,7 +26,6 @@ class Post(object):
         if not self.is_existed():
             _logger.warning("specified file %s does not exist.", self._post_file_name)
             return
-        triple_hyphen = 0 
 
         # TODO: handle different file encoding
         with codecs.open(self._post_file_name, 'r', 'utf-8') as post_fd:
@@ -37,7 +36,6 @@ class Post(object):
         _logger.debug("meta: %s", self._post_meta_data)
         _logger.debug("content: %s", self._post_content)
         return utility.RT.SUCCESS
-        
 
     def is_existed(self):
         return os.path.exists(self._post_file_name)

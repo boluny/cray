@@ -38,6 +38,9 @@
     <Compile Include="craylib\GenerateManager.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="craylib\Parseable.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="craylib\Parser.py">
       <SubType>Code</SubType>
     </Compile>
@@ -81,6 +84,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="project_targets.txt" />
+    <Content Include="requirements.txt" />
+    <Content Include="TODO" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="craylib\" />

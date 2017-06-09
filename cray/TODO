@@ -1,0 +1,7 @@
+2017-05-24
+1. Refactor with redundent code.
+2. Construct more unit test cases.
+3. Add function to create new post/page with default template. 
+4. Translate the 'project_targets.txt' to English.
+5. Refactor parameter handling with `argparse`. (hard to use, consider necessarity)
+6. Add site configuration using JSON.
