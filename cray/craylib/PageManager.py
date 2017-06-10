@@ -1,6 +1,11 @@
+# -*- coding: utf-8 -*-
+'''
+The module of a post manager object.
+'''
 import os
-from craylib.Page import Page
+
 from craylib import utility
+from craylib.Page import Page
 
 _logger = utility.get_logger('cray.PageManager')
 
@@ -35,4 +40,3 @@ class PageManager(object):
                     page_list.append(pp.as_dict())
 
         return page_list
-

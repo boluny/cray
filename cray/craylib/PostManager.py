@@ -1,6 +1,7 @@
-from craylib import Post
-from craylib import utility
 import os
+
+from craylib import Post, utility
+
 #from .Post import *
 
 _logger = utility.get_logger('cray.PostManager')
@@ -24,7 +25,7 @@ class PostManager(object):
         if self.__params[0] == 'read':
             pp = Post.Post(os.path.join(self.__post_dir, self.__params[1]))
             if pp.parse_file() == utility.RT.SUCCESS:
-                print(pp.get_metadata())
+                print(pp.get_meta())
                 print(pp.get_content())
 
     def create(self, file_name):
@@ -49,6 +50,3 @@ class PostManager(object):
                     post_list.append(pp)
 
         return post_list
-
-
-

@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+'''module for site generation class'''
+
 import codecs
 import json
 import os
