@@ -4,8 +4,8 @@
 import codecs
 import os
 
-from craylib import utility
-from craylib.Parser import Parser
+from cray.craylib import utility
+from cray.craylib.Parser import Parser
 
 module_logger = utility.get_logger('cray.parseable')
 

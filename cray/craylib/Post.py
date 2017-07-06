@@ -3,7 +3,7 @@
 The module of a post object.
 '''
 
-from craylib.Parseable import Parseable
+from cray.craylib.Parseable import Parseable
 
 
 class Post(Parseable):

@@ -1,7 +1,7 @@
 import unittest
 import os
 
-from craylib.Post import Post
+from cray.craylib.Post import Post
 
 POST_DIR = os.path.join(__file__, "../test_site", "_post")
 

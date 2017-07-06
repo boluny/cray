@@ -1,5 +1,6 @@
 {
     "title": "Demo",
     "description": "demo site description",
-    "url": "http://www.demo.com"
+    "url": "http://www.demo.com",
+    "generated_path": ".."
 }

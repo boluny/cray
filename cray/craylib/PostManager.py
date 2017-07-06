@@ -1,6 +1,6 @@
 import os
 
-from craylib import Post, utility
+from cray.craylib import Post, utility
 
 #from .Post import *
 
@@ -13,7 +13,7 @@ class PostManager(object):
         self.__posts_list = []
         _logger.debug('post_dir: %s', post_dir)
 
-    def execute(self, params):
+    def parse_arg(self, params):
         """
         Execute for the specified command e.g. new/list
         """

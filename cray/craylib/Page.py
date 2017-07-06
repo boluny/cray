@@ -6,8 +6,8 @@ The module of a page object.
 import codecs
 import os
 
-from craylib import utility
-from craylib.Parseable import Parseable
+from cray.craylib import utility
+from cray.craylib.Parseable import Parseable
 
 
 class Page(Parseable):

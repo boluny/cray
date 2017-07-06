@@ -4,8 +4,8 @@ The module of a post manager object.
 '''
 import os
 
-from craylib import utility
-from craylib.Page import Page
+from cray.craylib import utility
+from cray.craylib.Page import Page
 
 _logger = utility.get_logger('cray.PageManager')
 

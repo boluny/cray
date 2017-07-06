@@ -1,7 +1,7 @@
 import unittest
 import os
 
-from craylib.Page import Page
+from cray.craylib.Page import Page
 
 PAGE_DIR = os.path.join(__file__, "../test_site", "_page")
 

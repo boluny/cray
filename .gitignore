@@ -247,6 +247,11 @@ ModelManifest.xml
 /cray/env
 /cray/__pycache__
 /cray/sample_site/
-/cray/yatest/__pycache__
+/yatest/__pycache__
 /cray/.vscode
 *.pyperf
+*.egg-info/
+cli.py
+.vscode/
+demo/
+_site/

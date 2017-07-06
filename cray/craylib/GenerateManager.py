@@ -2,7 +2,6 @@
 '''module for site generation class'''
 
 import codecs
-import json
 import os
 import shutil
 from datetime import datetime
@@ -11,10 +10,10 @@ import markdown
 from jinja2 import FileSystemLoader
 from jinja2.environment import Environment
 
-from craylib import utility
-from craylib.PageManager import PageManager
-from craylib.PostManager import PostManager
-from craylib.ThemeManager import ThemeManager
+from cray.craylib import utility
+from cray.craylib.PageManager import PageManager
+from cray.craylib.PostManager import PostManager
+from cray.craylib.ThemeManager import ThemeManager
 
 _logger = utility.get_logger('cray.GenerateManager')
 
@@ -25,15 +24,13 @@ class GenerateManager(object):
         self._root_dir = root_dir
         self.__default_file_name = "index.html"
         self.__site_dict = {}
-        self._tar_dir = ""
         self._abs_dir = ""
         self._theme_dir = ""
         self._post_dir = ""
         self._page_dir = ""
 
     def set_tar_dir(self, tar_dir):
-        self._tar_dir = tar_dir
-        self._abs_dir = os.path.join(self._root_dir, self._tar_dir)
+        self._abs_dir = tar_dir
 
     def set_theme_dir(self, theme_dir):
         self._theme_dir = theme_dir
@@ -54,10 +51,22 @@ class GenerateManager(object):
     def generate_site(self):
         if self.__check_validation():
             self.__clear_site()
+        
+        if 'generate_path' not in self.__site_dict:
+            _logger.info("Not specify the generate path, please check carefully") 
+            generate_path = '.'
 
-        if not self.read_config():
-            _logger.error("invalid side configuration file, please check carefully")
+        if 'theme' not in self.__site_dict:
+            _logger.error("Theme is not specified, please check carefully") 
             return
+
+        if 'site_name' not in self.__site_dict:
+            site_name = '_site'
+        self.set_theme_dir(os.path.join(self._root_dir, utility.THEME_DIR))
+        self.set_post_dir(os.path.join(self._root_dir, utility.POST_DIR))
+        self.set_page_dir(os.path.join(self._root_dir, utility.PAGE_DIR))
+        self.set_tar_dir(utility.full_generate_path(self._root_dir, self.__site_dict))
+
         # main logic:
         # 1.  read theme template
         # 2.  parge posts and pages and save to dict
@@ -68,7 +77,7 @@ class GenerateManager(object):
             return
 
         tm = ThemeManager(self._theme_dir)
-        tm.set_theme('')
+        tm.set_theme(self.__site_dict['theme'])
         site_template_path = tm.get_template_path()
 
         if not self._page_dir:
@@ -91,23 +100,9 @@ class GenerateManager(object):
             posts_meta = self.generate_posts(site_template_path['post'], posts)
             self.generate_index(site_template_path['index'], posts_meta)
 
-    def read_config(self):
-        "Read and validate configuration file"
-        config_name = os.path.join(self._root_dir, 'config.json')
-        if not os.path.exists(config_name):
-            return False
-
-        with open(config_name, 'r', encoding='utf-8') as conf_fp:
-            config_content = conf_fp.read().replace('\n', ' ').replace('\r', ' ')
-
-        config_dict = json.loads(config_content)
-
-        if config_dict and isinstance(config_dict, dict):
-            self.__site_dict.update(config_dict)
-            return True
-
-        return False
-
+    def read_config(self, config_loader):
+        self.__site_dict.update(config_loader.get_config())
+        return True
 
     def generate_posts(self, post_template_path, posts):
         """
@@ -125,7 +120,7 @@ class GenerateManager(object):
             # Delegate the metadata from post itself to the tempoary containers
             # for generator global usage
             # TODO: make it a class member?
-            for k, v in post.get_metadata().items():
+            for k, v in post.get_meta().items():
                 per_meta[k] = v
             
             # trim post.title to get rid of double quotation mark
