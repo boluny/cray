@@ -30,3 +30,6 @@ class ThemeManager(object):
 
         return dict(index = self.__tpl_index, post = self.__tpl_post, page = self.__tpl_page)
 
+    def get_abs_path(self):
+        return os.path.join(self.__theme_dir, self.__theme_name)
+

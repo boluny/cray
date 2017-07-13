@@ -20,7 +20,7 @@ class Page(Parseable):
 
     def page_post_process(self, fresh_meta):
         '''customized post process logic for page object '''
-        pure_file_name = os.path.split(self._file_name)[1].rpartition('.')[0]
+        pure_file_name = utility.file_name_no_ext(self._file_name)
         # The solution is ugly here but the leading slash mark is needed
         # Call for improvement for this
         self._post_process_meta['url_dir'] = pure_file_name + os.sep

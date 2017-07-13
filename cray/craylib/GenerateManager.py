@@ -42,6 +42,7 @@ class GenerateManager(object):
         self._page_dir = page_dir
 
     def __check_validation(self):
+        #print(self._abs_dir, "exists.")
         return os.path.exists(self._abs_dir)
 
     def __clear_site(self):
@@ -49,9 +50,7 @@ class GenerateManager(object):
             shutil.rmtree(self._abs_dir, ignore_errors=True)
 
     def generate_site(self):
-        if self.__check_validation():
-            self.__clear_site()
-        
+        '''The main function to generate the whole site'''        
         if 'generate_path' not in self.__site_dict:
             _logger.info("Not specify the generate path, please check carefully") 
             generate_path = '.'
@@ -60,8 +59,8 @@ class GenerateManager(object):
             _logger.error("Theme is not specified, please check carefully") 
             return
 
-        if 'site_name' not in self.__site_dict:
-            site_name = '_site'
+        theme_subdir = self.__site_dict if 'include_theme_subdir' in self.__site_dict \
+        else ['js', 'css', 'image']
         self.set_theme_dir(os.path.join(self._root_dir, utility.THEME_DIR))
         self.set_post_dir(os.path.join(self._root_dir, utility.POST_DIR))
         self.set_page_dir(os.path.join(self._root_dir, utility.PAGE_DIR))
@@ -84,21 +83,32 @@ class GenerateManager(object):
             _logger.error("no page directory")
             return
 
-        page_manager = PageManager(self._page_dir)
-        pages = page_manager.get_all_pages()
-        self.__site_dict['pages'] = pages
-
         if not self._post_dir:
             _logger.error("no post directory")
             return
+
+        page_manager = PageManager(self._page_dir)
+        pages = page_manager.get_all_pages()
+
+        if utility.name_conflict(page_manager.get_page_names(), theme_subdir):
+            _logger.error("page name conflict with configured included theme subdirectories.")
+            return
+
+        self.__site_dict['pages'] = pages
 
         pm = PostManager(self._post_dir)
         posts = pm.get_all_posts()
 
         if site_template_path is not None:
+            # TODO: any error after clear the site is disallowed,
+            # so careful check should be done before this segment
+            if self.__check_validation():
+                self.__clear_site()
             self.generate_pages(site_template_path['page'])
             posts_meta = self.generate_posts(site_template_path['post'], posts)
             self.generate_index(site_template_path['index'], posts_meta)
+            utility.copy_subdir(tm.get_abs_path(), theme_subdir, self._abs_dir)
+            print("Site generation is finished!")
 
     def read_config(self, config_loader):
         self.__site_dict.update(config_loader.get_config())
@@ -160,7 +170,7 @@ class GenerateManager(object):
             return []
 
         for page in self.__site_dict['pages']:
-            # TODO: markdown parse
+            # TODO: markdown parser add TOC support
             page_content = markdown.markdown(page['content'])
 
             url_dir = page['url_dir']

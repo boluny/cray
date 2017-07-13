@@ -5,6 +5,7 @@ import os
 import logging
 import http.server
 import socketserver
+import shutil
 from enum import Enum
 
 TEST_SITE = 'sample_site'
@@ -76,3 +77,18 @@ def full_generate_path(root, conf_dict):
     site_name = conf_dict['site_name'] if 'site_name' in conf_dict else '_site'
     return os.path.join(root, generate_path, site_name)
     
+def copy_subdir(root_dir, subdirs, dest_dir):
+    if not root_dir or not subdirs or not dest_dir:
+        return
+
+    for sub in subdirs:
+        sub_abs_path = os.path.join(root_dir, sub)
+        dest_sub_abs_path = os.path.join(dest_dir, sub)
+        if os.path.exists(sub_abs_path):
+            shutil.copytree(sub_abs_path, dest_sub_abs_path)
+
+def name_conflict(src_str_list, dest_str_list):
+    return any([a_str in dest_str_list for a_str in src_str_list])
+
+def file_name_no_ext(file_name):
+    return os.path.split(file_name)[1].rpartition('.')[0]

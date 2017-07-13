@@ -107,6 +107,7 @@ demo `about` page
 <head>
 	<meta charset="utf-8">
     <title>Index</title>
+    <!-- <link rel="stylesheet" href="/css/main.css"> -->
 </head>
 <body>
 	{% include 'header.html' %}
@@ -169,7 +170,8 @@ demo `about` page
     "description": "demo site description",
     "url": "http://www.demo.com",
     "generate_path": "..",
-    "theme":"simple"
+    "theme":"simple",
+    "include_theme_subdir":['js','css','image]
 }        
         '''
         with open(os.path.join(self.__site_root, 'config.json'), 'w') as config_fd:

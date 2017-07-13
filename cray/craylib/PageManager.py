@@ -40,3 +40,7 @@ class PageManager(object):
                     page_list.append(pp.as_dict())
 
         return page_list
+
+    def get_page_names(self):
+        files = os.listdir(self.__page_dir)
+        return map(utility.file_name_no_ext, files)

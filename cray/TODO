@@ -5,3 +5,7 @@
 4. Translate the 'project_targets.txt' to English.
 5. Refactor parameter handling with `argparse`. (hard to use, consider necessarity)
 6. Add site configuration using JSON.
+
+2017-07-14
+1. Add filter in jinja2 environment to add some common functionality to the template. 
+e.g. datetimeformat
