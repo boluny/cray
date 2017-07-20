@@ -4,7 +4,7 @@
 import os
 import textwrap
 from datetime import datetime, date
-from cray.craylib import Post, utility
+from cray.craylib import post, utility
 
 #from .Post import *
 
@@ -33,7 +33,7 @@ class PostManager(object):
 
         assert len(self.__params) == 2
         if self.__params[0] == 'read':
-            pp = Post.Post(os.path.join(self.__post_dir, self.__params[1]))
+            pp = post.Post(os.path.join(self.__post_dir, self.__params[1]))
             if pp.parse_file() == utility.RT.SUCCESS:
                 print(pp.get_meta())
                 print(pp.get_content())
@@ -100,7 +100,7 @@ content goes here
         files = os.listdir(self.__post_dir)
         for file in files:
             if file.endswith('.md') or file.endswith('.markdown'):
-                pp = Post.Post(os.path.join(self.__post_dir, file))
+                pp = post.Post(os.path.join(self.__post_dir, file))
                 if pp.parse_file() == utility.RT.SUCCESS:
                     post_list.append(pp)
 

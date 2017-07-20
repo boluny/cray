@@ -6,6 +6,7 @@ class ThemeManager(object):
     def __init__(self, theme_dir):
         self.__theme_dir = theme_dir
         self.__theme = []
+        self.__theme_name = ""
 
     def set_theme(self, theme_name):
         self.__theme_name = theme_name

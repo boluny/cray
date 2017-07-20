@@ -169,11 +169,12 @@ demo `about` page
     "title": "Demo",
     "description": "demo site description",
     "url": "http://www.demo.com",
-    "generate_path": "..",
+    "generate_path": ".",
     "theme":"simple",
-    "include_theme_subdir":['js','css','image]
+    "include_theme_subdir":["js","css","image"]
 }        
         '''
+        # "genrate_path" could be configured as ".."
         with open(os.path.join(self.__site_root, 'config.json'), 'w') as config_fd:
             config_fd.write(config_content)
         

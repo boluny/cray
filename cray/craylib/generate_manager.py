@@ -11,9 +11,9 @@ from jinja2 import FileSystemLoader
 from jinja2.environment import Environment
 
 from cray.craylib import utility
-from cray.craylib.PageManager import PageManager
-from cray.craylib.PostManager import PostManager
-from cray.craylib.ThemeManager import ThemeManager
+from cray.craylib.page_manager import PageManager
+from cray.craylib.post_manager import PostManager
+from cray.craylib.theme_manager import ThemeManager
 
 _logger = utility.get_logger('cray.GenerateManager')
 
@@ -135,7 +135,7 @@ class GenerateManager(object):
             
             # trim post.title to get rid of double quotation mark
             if 'title' in per_meta:
-                per_meta['title'] = utility.trim_quotation_mark(per_meta['title'])
+                per_meta['title'] = utility.trim_double_quotation_mark(per_meta['title'])
 
             # TODO: markdown parse
             per_meta['content'] = markdown.markdown(post.get_content())

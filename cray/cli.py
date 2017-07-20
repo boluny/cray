@@ -1,14 +1,15 @@
 '''Main entry for the static site generator tool'''
 
-# Copy the cli.py from cray/ to this top-level directory just for test
-# it should be soft link on Linux, but we can ignore for that file in the directory for now
+# Link the cli.py from cray/ to this top-level directory just for test
+# using `ln -s` on Linux and `mklink` on Windows Since Windows Vista
 import os
 import sys
 import textwrap
-from cray.craylib.PostManager import PostManager
-from cray.craylib.GenerateManager import GenerateManager
-from cray.craylib.CreateManager import CreateManager
-from cray.craylib.ConfigLoader import ConfigLoader
+
+from cray.craylib.post_manager import PostManager
+from cray.craylib.generate_manager import GenerateManager
+from cray.craylib.create_manager import CreateManager
+from cray.craylib.config_loader import ConfigLoader
 from cray.craylib.utility import start_server, is_valid_site, full_generate_path
 
 
