@@ -16,15 +16,20 @@ Usage
 1. Clone the repository.
 
 2. Cd into the root directory of the repository, install it using 
+
 .. code-block:: bash 
     $ pip install .
 
-3. .. code-block:: bash
+3. Execute following commands:
+
+.. code-block:: bash
+
     $ cray init [your-site-name]
 
     $ cd [your-site-name] && cray generate
 
     $ cray preview
+
 4. Open browser for `http://127.0.0.1/ <http://127.0.0.1/>`_
 
 
