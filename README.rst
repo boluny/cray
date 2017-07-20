@@ -1,5 +1,5 @@
 cray
-===
+====
 
 A micro static blog generator
 
@@ -14,11 +14,16 @@ Usage
 -----
 
 1. Clone the repository.
-2. Cd into the root directory of the repository, install it using `pip install .`
-3. 
-.. code-block:: bash
+
+2. Cd into the root directory of the repository, install it using 
+.. code-block:: bash 
+    $ pip install .
+
+3. .. code-block:: bash
     $ cray init [your-site-name]
+
     $ cd [your-site-name] && cray generate
+
     $ cray preview
 4. Open browser for `http://127.0.0.1/ <http://127.0.0.1/>`_
 
@@ -35,4 +40,4 @@ TODO list
 1. Usage hint of the program and CLI improvment.
 2. Add more unit tests.
 3. Refactor if target #1 is done.
-3. Want to generate mindmap using d3.js if I could write a markdown to d3 tree converter.
+4. Want to generate mindmap using d3.js if I could write a markdown to d3 tree converter.
