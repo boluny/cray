@@ -18,6 +18,7 @@ Usage
 2. Cd into the root directory of the repository, install it using 
 
 .. code-block:: bash 
+
     $ pip install .
 
 3. Execute following commands:
