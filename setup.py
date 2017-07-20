@@ -1,10 +1,10 @@
-# import os
+import os
 
 from setuptools import setup, find_packages
 
 
-#with open(os.path.join(os.path.dirname(__file__), "README.rst")) as readme:
-#    long_description = readme.read()
+with open(os.path.join(os.path.dirname(__file__), "README.rst")) as readme:
+    long_description = readme.read()
 
 # classifiers = [
 #     "Development Status :: 5 - Production/Stable",
@@ -38,7 +38,7 @@ setup(
     # classifiers=classifiers,
     description="A micro static site generator written in Python",
     license="MIT",
-    # long_description=long_description,
+    long_description=long_description,
     entry_points={"console_scripts": ["cray = cray.cli:main"]},
     # vcversioner={"version_module_paths" : ["jsonschema/_version.py"]},
 )
