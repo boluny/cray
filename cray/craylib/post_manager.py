@@ -8,22 +8,25 @@ from cray.craylib import post, utility
 
 #from .Post import *
 
-_logger = utility.get_logger('cray.PostManager')
+_LOGGER = utility.get_logger('cray.PostManager')
 
 class PostManager(object):
     """The class to manage all the posts in the sites."""
     def __init__(self, post_dir):
         self.__post_dir = post_dir
         self.__posts_list = []
-        _logger.debug('post_dir: %s', post_dir)
+        self.__params = []
+        _LOGGER.debug('post_dir: %s', post_dir)
 
     def parse_arg(self, params):
         """
         Execute for the specified command e.g. new/list
+        :param params: The command argument after subcommand 'post'
+        :returns: None
         """
 
         self.__params = params
-        _logger.debug('params: %s', params)
+        _LOGGER.debug('params: %s', params)
 
         if len(self.__params) == 1:
             if self.__params[0] == 'list':
@@ -33,10 +36,10 @@ class PostManager(object):
 
         assert len(self.__params) == 2
         if self.__params[0] == 'read':
-            pp = post.Post(os.path.join(self.__post_dir, self.__params[1]))
-            if pp.parse_file() == utility.RT.SUCCESS:
-                print(pp.get_meta())
-                print(pp.get_content())
+            this_post = post.Post(os.path.join(self.__post_dir, self.__params[1]))
+            if this_post.parse_file() == utility.RT.SUCCESS:
+                print(this_post.get_meta())
+                print(this_post.get_content())
         elif self.__params[0] == 'create':
             # file name goes like hello-world.md
             self.create(self.__params[1])
@@ -67,8 +70,8 @@ date: %s +0800
 content goes here
 '''
         # date e.g. 2015-09-22 11:09:00
-        with open(full_path, 'w', encoding='utf-8') as fd:
-            fd.write(textwrap.dedent(content) % \
+        with open(full_path, 'w', encoding='utf-8') as post_fd:
+            post_fd.write(textwrap.dedent(content) % \
             (' '.join(file_name_words), datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
 
         print("Successfully create post", file_name_with_date)
@@ -84,24 +87,22 @@ content goes here
         if not os.path.isfile(file_abs_path):
             print('Error: post', file_name, 'point to a directory')
             exit(-1)
-        
+
         # TODO: add an dialog to ask for confirming
         os.remove(file_abs_path)
         print('Successfully remove post', file_name)
 
-    def is_post_exist(self, file_name):
-        pass
-
-    def set_post_dir(self, path):
-        pass
-
     def get_all_posts(self):
+        '''
+        Get all the posts' content including meta and content.
+        :returns: -> list
+        '''
         post_list = []
         files = os.listdir(self.__post_dir)
         for file in files:
             if file.endswith('.md') or file.endswith('.markdown'):
-                pp = post.Post(os.path.join(self.__post_dir, file))
-                if pp.parse_file() == utility.RT.SUCCESS:
-                    post_list.append(pp)
+                _post = post.Post(os.path.join(self.__post_dir, file))
+                if _post.parse_file() == utility.RT.SUCCESS:
+                    post_list.append(_post)
 
         return post_list

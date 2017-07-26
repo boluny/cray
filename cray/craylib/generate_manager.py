@@ -60,7 +60,7 @@ class GenerateManager(object):
             return
 
         theme_subdir = self.__site_dict if 'include_theme_subdir' in self.__site_dict \
-        else ['js', 'css', 'image']
+        else ["js", "css", "image"]
         self.set_theme_dir(os.path.join(self._root_dir, utility.THEME_DIR))
         self.set_post_dir(os.path.join(self._root_dir, utility.POST_DIR))
         self.set_page_dir(os.path.join(self._root_dir, utility.PAGE_DIR))

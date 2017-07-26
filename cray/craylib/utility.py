@@ -41,18 +41,18 @@ def get_logger(name):
 
     # Copy following from https://docs.python.org/3/howto/logging.html#logging-advanced-tutorial
     # create console handler and set level to debug
-    ch = logging.StreamHandler()
-    ch.setLevel(logging.DEBUG)
+    my_sm_handler = logging.StreamHandler()
+    my_sm_handler.setLevel(logging.DEBUG)
 
     # create formatter
     formatter = logging.Formatter('%(asctime)s - %(filename)s:%(funcName)s:%(lineno)d - \
     %(levelname)s - %(message)s')
 
     # add formatter to ch
-    ch.setFormatter(formatter)
+    my_sm_handler.setFormatter(formatter)
 
     # add ch to logger
-    logger.addHandler(ch)
+    logger.addHandler(my_sm_handler)
 
     return logger
 
@@ -73,8 +73,8 @@ def trim_double_quotation_mark(original_str):
     '''Remove the double quotation at leading and last position'''
     if original_str.startswith('"') and original_str.endswith('"'):
         return original_str[1:-1]
-    else:
-        return original_str
+
+    return original_str
 
 def full_generate_path(root, conf_dict):
     '''Return the absolute path when configured "generate_path" in configuration file,
@@ -85,6 +85,12 @@ def full_generate_path(root, conf_dict):
     return os.path.join(root, generate_path, site_name)
 
 def copy_subdir(root_dir, subdirs, dest_dir):
+    '''Copy subdirectories from source directory to destination directory
+    :param root_dir: The source directory
+    :param subdires: List of subdirectories names in root_dir
+    :param dest_dir: The destination directory
+    :returns: None
+    '''
     if not root_dir or not subdirs or not dest_dir:
         return
 

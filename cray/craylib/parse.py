@@ -7,7 +7,7 @@ import io
 
 from cray.craylib import utility
 
-module_logger = utility.get_logger('cray.parseable')
+MY_LOGGER = utility.get_logger('cray.parseable')
 
 class Parseable(object):
     """The base class for element which can be parsed."""
@@ -35,7 +35,7 @@ class Parseable(object):
         '''
         # TODO: add exception or failture test
         if not self.is_existed():
-            module_logger.warning("specified file %s does not exist.", self._file_name)
+            MY_LOGGER.warning("specified file %s does not exist.", self._file_name)
             return
 
         with codecs.open(self._file_name, 'r', 'utf-8') as parseable_fd:
@@ -43,8 +43,8 @@ class Parseable(object):
             my_parser = Parser(whole_content)
             self.__meta, self.__content = my_parser.parse()
 
-        module_logger.debug("meta: %s", self.__meta)
-        module_logger.debug("content: %s", self.__content)
+        MY_LOGGER.debug("meta: %s", self.__meta)
+        MY_LOGGER.debug("content: %s", self.__content)
 
         if self.__hooker_func and callable(self.__hooker_func):
             self.__hooker_func(self.__meta)
@@ -88,7 +88,7 @@ class Parser(object):
 
             if triple_hyphen == 1:
                 if not line.startswith('-') and not line.startswith('#'):
-                    # let maxsplit set to 1 to just take the first ':' as splitter 
+                    # let maxsplit set to 1 to just take the first ':' as splitter
                     attribute_and_value = line.split(':', 1)
                     meta[attribute_and_value[0].strip()] = \
                         attribute_and_value[1].strip()
@@ -97,7 +97,7 @@ class Parser(object):
                 break
 
             line = buf.readline()
-        
+
         content = buf.read()
-        
+
         return meta, content

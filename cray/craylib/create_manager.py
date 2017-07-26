@@ -29,7 +29,7 @@ class CreateManager(object):
     def _create_posts(self):
         post_dir = os.path.join(self.__site_root, '_post')
         os.makedirs(post_dir, 0o777, True)
-        
+
         file_name = str(date.today()) + '-hello-world.md'
         content = '''
 ---
@@ -51,13 +51,13 @@ it's a code snippet:
 '''
         with open(os.path.join(post_dir, file_name), 'w', encoding='utf-8') as hello_fd:
             hello_fd.write(textwrap.dedent(content))
-        
+
         return True
 
     def create_pages(self):
         post_dir = os.path.join(self.__site_root, '_page')
         os.makedirs(post_dir, 0o777, True)
-        
+
         file_name = 'about.md'
         content = '''
 ---
@@ -70,7 +70,7 @@ demo `about` page
 '''
         with open(os.path.join(post_dir, file_name), 'w', encoding='utf-8') as about_fd:
             about_fd.write(content)
-        
+
         return True
 
     def create_themes(self):
@@ -130,12 +130,11 @@ demo `about` page
     <title>{{ page.title }}</title>
 </head>
 <body>
-	{% include 'header.html' %} 
+	{% include 'header.html' %}
 	<h1>{{ page.title }}</h1>
 	<div>{{ page.content }}</div>
-	
-	{% include 'footer.html' %} 
-    
+	{% include 'footer.html' %}
+
 </body>
 </html>
             '''),
@@ -147,24 +146,23 @@ demo `about` page
     <title>{{ post.title }}</title>
 </head>
 <body>
-	{% include 'header.html' %} 
+	{% include 'header.html' %}
 	<h1>{{ post.title }}</h1>
 	<p>{{ post.date }}</p>
 	<div>{{ post.content }}</div>
-	
-	{% include 'footer.html' %} 
-    
+	{% include 'footer.html' %}
+
 </body>
 </html>
             ''')
         ]
         for file_name, content in file_list:
             with open(os.path.join(default_theme_dir, file_name), 'w') as _fd:
-                _fd.write(textwrap.dedent(content))           
+                _fd.write(textwrap.dedent(content))
 
 
     def create_config_file(self):
-        config_content='''
+        config_content = '''
 {
     "title": "Demo",
     "description": "demo site description",
@@ -177,7 +175,7 @@ demo `about` page
         # "genrate_path" could be configured as ".."
         with open(os.path.join(self.__site_root, 'config.json'), 'w') as config_fd:
             config_fd.write(config_content)
-        
+
 
     def check_site_exist(self):
         return os.path.exists(self.__site_root)

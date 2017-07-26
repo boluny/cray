@@ -3,7 +3,6 @@
 The module of a page object.
 '''
 
-import codecs
 import os
 
 from cray.craylib import utility
@@ -39,4 +38,3 @@ class Page(Parseable):
     def as_dict(self):
         '''return the metas with some customized post processing'''
         return self._post_process_meta
-
