@@ -60,13 +60,13 @@ def start_server(root_dir):
     '''start the server in the directory specified by function argument.
     root_dir:string the absolute path of a directory.
     '''
-    HTTP_PORT = 80
+    _host_port = 80
 
     os.chdir(root_dir)
 
     handler_alias = http.server.SimpleHTTPRequestHandler
-    httpd = socketserver.TCPServer(("", HTTP_PORT), handler_alias)
-    print("serving at 127.0.0.1:%d" % HTTP_PORT)
+    httpd = socketserver.TCPServer(("", _host_port), handler_alias)
+    print("serving at 127.0.0.1:%d" % _host_port)
     httpd.serve_forever()
 
 def trim_double_quotation_mark(original_str):

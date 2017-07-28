@@ -36,11 +36,11 @@ def main(args=None):
         if not len(args) == 3:
             print("Invalid params for command 'cray init'")
             exit(-1)
-        
-        cm = CreateManager(os.getcwd(), args[2])
-        if cm.create():
+
+        create_manager = CreateManager(os.getcwd(), args[2])
+        if create_manager.create():
             print('Successfully create static site %s!' % args[2])
-        
+
         return
 
     # operations other than 'create' should under the site prototype root directory
@@ -48,11 +48,11 @@ def main(args=None):
         print("Not a valid site structure, please check if this directory contains", \
         "required folders and files.")
         exit(-1)
-    
+
     conf_loader = ConfigLoader(os.getcwd())
     if not conf_loader.parse_config():
         print("Invalid configuration file, please check.")
-        exit(-1)       
+        exit(-1)
 
     # handle post related command logic
     if args[1] == 'post':
@@ -70,7 +70,7 @@ def main(args=None):
     elif args[1] == 'preview':
         # call HTTP module to start a server on the site directory
         # python -m http.server 8000
-        
+
         start_server(full_generate_path(os.getcwd(), conf_loader.get_config()))
 
     elif args[1] == 'deploy':

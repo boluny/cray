@@ -75,6 +75,10 @@ class Parser(object):
         self.__content = content
 
     def parse(self):
+        '''
+        Parse the content of a parable object.
+        :returns: --> tuple (meta, content)
+        '''
         meta = dict()
         triple_hyphen = 0
         buf = io.StringIO(self.__content)

@@ -1,5 +1,7 @@
+# -*- coding: utf-8 -*-
+'''Module entry for all the stuff, still decide where to put the entry function'''
 
-__version__ = '0.0.1'
+__version__ = '0.1.1'
 __all__ = [
     'config_loader',
     'create_manager',
