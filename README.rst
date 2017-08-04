@@ -10,7 +10,9 @@ The lazy author forgot the `Jekyll <http://jekyllrb.com>`_ usage and don't want 
 the beginning.
 
 # Yeah I know it's a shabby project until now but it will be updated in times.
+
 Update in 2017-08-04:
+
 I find `pelican <https://blog.getpelican.com/>`_ is a mature one, but I can still have my own one even it's not comply with python philosophy.
 
 
