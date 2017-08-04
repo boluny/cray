@@ -37,7 +37,7 @@ def get_logger(name):
     '''Return a logger for debug/log stuff'''
     # create logger
     logger = logging.getLogger(name)
-    logger.setLevel(logging.DEBUG)
+    logger.setLevel(logging.WARN)
 
     # Copy following from https://docs.python.org/3/howto/logging.html#logging-advanced-tutorial
     # create console handler and set level to debug

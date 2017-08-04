@@ -16,8 +16,28 @@ from cray.craylib.utility import start_server, is_valid_site, full_generate_path
 def usage():
     '''Print usage message'''
     usage_msg = textwrap.dedent(r'''
-    usage:
-    cray [class] [behavior] [params...] 
+    Usage:
+    cray [subcommand] [behavior] [params...] 
+
+    Subcommand could be one of "init", "post", "page", "generate", "preview", all subcommands 
+    should be executed under the root of a site except for "init"
+
+    for each subcommand, there are some allowed behaviors to use.
+    currently, only behaviors for subcommand "post" are implemented, they are:
+    
+    cray post list
+    cray post read [file]
+    cray post create [file]
+    cray post delete [file]
+
+    The file is the real name of the post file, it could be retrived from "cray post list"
+
+    other subcommands available now are:
+    cray init
+    cray generate
+    cray preview
+
+    More stuff will be added here along with the implemtation to more subcommands and behaviors.
     ''')
     print(usage_msg)
 
