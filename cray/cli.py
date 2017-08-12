@@ -26,9 +26,9 @@ def usage():
     currently, only behaviors for subcommand "post" are implemented, they are:
     
     cray post list
-    cray post read [file]
-    cray post create [file]
-    cray post delete [file]
+    cray post read <file>
+    cray post create <file>
+    cray post delete <file>
 
     The file is the real name of the post file, it could be retrived from "cray post list"
 
