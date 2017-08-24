@@ -1,3 +1,6 @@
+.. image:: https://travis-ci.org/boluny/cray.svg?branch=master
+    :target: https://travis-ci.org/boluny/cray
+    
 cray
 ====
 
