@@ -3,7 +3,7 @@ import os
 
 from cray.craylib.post import Post
 
-POST_DIR = os.path.join(__file__, "../test_site", "_post")
+POST_DIR = os.path.join(os.path.dirname(__file__), "test_site", "_post")
 
 def get_test_suites():
     '''Return test cases as a suite in this module'''

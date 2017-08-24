@@ -3,7 +3,7 @@ import os
 
 from cray.craylib.page import Page
 
-PAGE_DIR = os.path.join(__file__, "../test_site", "_page")
+PAGE_DIR = os.path.join(os.path.dirname(__file__), "test_site", "_page")
 
 def get_test_suites():
     '''Return test cases as a suite in this module'''
