@@ -79,13 +79,13 @@ demo `about` page
 
         file_list = [
             ('footer.html',
-            '''
+             '''
 <footer>
 <h3>Powered by Cray 2017</h3>
 </footer>
             '''),
             ('header.html',
-            '''
+             '''
 <header class="site-header">
   <div class="wrapper">
     <a class="site-title" href="/">Index</a>
@@ -102,7 +102,7 @@ demo `about` page
 </header>
             '''),
             ('index.html',
-            '''
+             '''
 <html>
 <head>
 	<meta charset="utf-8">
@@ -123,7 +123,7 @@ demo `about` page
 </html>
             '''),
             ('page.html',
-            '''
+             '''
 <html>
 <head>
 	<meta charset="utf-8">
@@ -139,7 +139,7 @@ demo `about` page
 </html>
             '''),
             ('post.html',
-            '''
+             '''
 <html>
 <head>
 	<meta charset="utf-8">

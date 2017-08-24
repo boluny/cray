@@ -50,13 +50,12 @@ class GenerateManager(object):
             shutil.rmtree(self._abs_dir, ignore_errors=True)
 
     def generate_site(self):
-        '''The main function to generate the whole site'''        
+        '''The main function to generate the whole site'''
         if 'generate_path' not in self.__site_dict:
-            _logger.info("Not specify the generate path, please check carefully") 
-            generate_path = '.'
+            _logger.info("Not specify the generate path, please check carefully")
 
         if 'theme' not in self.__site_dict:
-            _logger.error("Theme is not specified, please check carefully") 
+            _logger.error("Theme is not specified, please check carefully")
             return
 
         theme_subdir = self.__site_dict if 'include_theme_subdir' in self.__site_dict \
@@ -132,7 +131,7 @@ class GenerateManager(object):
             # TODO: make it a class member?
             for k, v in post.get_meta().items():
                 per_meta[k] = v
-            
+
             # trim post.title to get rid of double quotation mark
             if 'title' in per_meta:
                 per_meta['title'] = utility.trim_double_quotation_mark(per_meta['title'])
@@ -163,7 +162,7 @@ class GenerateManager(object):
             else:
                 _logger.warning("Cannot find date information for post %s", per_meta['title'])
 
-        return posts_meta  
+        return posts_meta
 
     def generate_pages(self, page_template_path):
         if len(self.__site_dict['pages']) == 0 or page_template_path == '':
@@ -172,6 +171,7 @@ class GenerateManager(object):
         for page in self.__site_dict['pages']:
             # TODO: markdown parser add TOC support
             page_content = markdown.markdown(page['content'])
+            page['content'] = page_content
 
             url_dir = page['url_dir']
             url = os.path.join(url_dir, self.__default_file_name)
@@ -185,11 +185,12 @@ class GenerateManager(object):
 
     def generate_index(self, index_template_path, posts_meta):
         file_path = os.path.join(self._abs_dir, self.__default_file_name)
-        result = self.__template_helper(index_template_path, posts=posts_meta, site=self.__site_dict)
+        result = self.__template_helper(index_template_path, posts=posts_meta, \
+        site=self.__site_dict)
 
         with codecs.open(file_path, 'w', 'utf-8') as index_fd:
             index_fd.write(result)
-    
+
     def __template_helper(self, template_path, **kwargs):
         env = Environment()
         template_dir, template_name = os.path.split(template_path)
