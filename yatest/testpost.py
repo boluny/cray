@@ -16,6 +16,7 @@ class PostGenerateTestCase(unittest.TestCase):
     '''Test case for post generation'''
     def runTest(self):
         '''Run test'''
+        print(POST_DIR)
         p_hello_world = Post(os.path.join(POST_DIR, "2017-06-02-hello-world.markdown"))
         p_non_existence = Post(os.path.join(POST_DIR, "2015-09-18-no-existence.markdown"))
 
