@@ -22,6 +22,8 @@ I find `pelican <https://blog.getpelican.com/>`_ is a mature one, but I can stil
 Usage 
 -----
 
+0. Prerequisite: Python3 and package pip installed and in %PATH%.
+
 1. Clone the repository.
 
 2. Cd into the root directory of the repository, install it using 
@@ -52,7 +54,7 @@ which is a game like LOL but on mobile platforms.
 TODO list
 ---------
 
-1. Usage hint of the program and CLI improvment.
+1. Usage hint of the program and CLI improvment.    [Done]
 2. Add more unit tests.
-3. Refactor if target #1 is done.
+3. Refactor if target #2 is done.
 4. Want to generate mindmap using d3.js if I could write a markdown to d3 tree converter.
