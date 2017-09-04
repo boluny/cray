@@ -70,6 +70,8 @@ class UtilityFileNameNoExtTestCase(unittest.TestCase):
         file_c = 'testc.md'
         file_d = ''
         self.assertEqual('testa', test_module.file_name_no_ext(file_a))
-        self.assertEqual('testb', test_module.file_name_no_ext(file_b))
         self.assertEqual('testc', test_module.file_name_no_ext(file_c))
         self.assertEqual('', test_module.file_name_no_ext(file_d))
+
+        if os.name == 'nt':
+            self.assertEqual('testb', test_module.file_name_no_ext(file_b))
