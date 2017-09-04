@@ -15,5 +15,3 @@ if __name__ == '__main__':
 
     status = not unittest.TextTestRunner(verbosity=2).run(alltests).wasSuccessful()
     sys.exit(status)
-
-    

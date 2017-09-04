@@ -71,6 +71,9 @@ def start_server(root_dir):
 
 def trim_double_quotation_mark(original_str):
     '''Remove the double quotation at leading and last position'''
+    if not original_str:
+        return ''
+    
     if original_str.startswith('"') and original_str.endswith('"'):
         return original_str[1:-1]
 
