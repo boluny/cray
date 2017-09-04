@@ -109,4 +109,13 @@ def name_conflict(src_str_list, dest_str_list):
 
 def file_name_no_ext(file_name):
     '''Get the filename without its extension'''
-    return os.path.split(file_name)[1].rpartition('.')[0]
+    raw_file_name = ''
+
+    if os.name == 'nt':
+        import ntpath
+        raw_file_name = ntpath.split(file_name)[1].rpartition('.')[0]
+    else:
+        import posixpath
+        raw_file_name = posixpath.split(file_name)[1].rpartition('.')[0]
+    
+    return raw_file_name
