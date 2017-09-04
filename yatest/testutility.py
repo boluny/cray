@@ -66,7 +66,7 @@ class UtilityFileNameNoExtTestCase(unittest.TestCase):
     def runTest(self):
         '''Run test'''
         file_a = '/home/byuan/testa.md'
-        file_b = r'C:\\test\\testb.md'
+        file_b = 'C:\\test\\testb.md'
         file_c = 'testc.md'
         file_d = ''
         self.assertEqual('testa', test_module.file_name_no_ext(file_a))
