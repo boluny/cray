@@ -166,7 +166,8 @@ demo `about` page
 {
     "title": "Demo",
     "description": "demo site description",
-    "url": "http://www.demo.com",
+    "url": "www.demo.com",
+    "protocol": "http",
     "generate_path": ".",
     "theme":"simple",
     "include_theme_subdir":["js","css","image"]

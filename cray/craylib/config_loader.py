@@ -23,10 +23,17 @@ class ConfigLoader(object):
         if not os.path.exists(config_name):
             return False
 
-        with open(config_name, 'r', encoding='utf-8') as conf_fp:
-            config_content = conf_fp.read().replace('\n', ' ').replace('\r', ' ')
+        trim_json_lines = []
 
-        self.__config_dict = json.loads(config_content)
+        with open(config_name, 'r', encoding='utf-8') as conf_fp:
+            config_content = conf_fp.readlines()
+            # Add support for comment style like //
+            for line in config_content:
+                trim_json_lines.append(line[:line.find('//')])
+
+            final_conf = ' '.join(trim_json_lines).replace('\n', ' ').replace('\r', ' ')
+
+        self.__config_dict = json.loads(final_conf)
 
         if self.__config_dict and isinstance(self.__config_dict, dict):
             return True

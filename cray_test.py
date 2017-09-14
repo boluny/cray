@@ -3,13 +3,14 @@
 import sys
 import unittest
 
-from yatest import testpost, testpage, testutility
+from yatest import testpost, testpage, testutility, testconfig
 
 if __name__ == '__main__':
     all_test_suites = []
     all_test_suites.append(testpost.get_test_suites())
     all_test_suites.append(testpage.get_test_suites())
     all_test_suites.append(testutility.get_test_suites())
+    all_test_suites.append(testconfig.get_test_suites())
 
     alltests = unittest.TestSuite(all_test_suites)
 

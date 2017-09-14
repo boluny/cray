@@ -1,6 +1,9 @@
 {
     "title": "Demo",
-    "description": "demo site description",
-    "url": "http://www.demo.com",
+    "description": "demo site description", // This is the description of the site
+    "url": "www.demo.com",
+    "protocol": "http",
+    //'page_number': 5
     "generated_path": ".."
+
 }
