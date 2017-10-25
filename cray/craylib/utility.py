@@ -6,6 +6,7 @@ import logging
 import http.server
 import socketserver
 import shutil
+from datetime import datetime
 from enum import Enum
 
 TEST_SITE = 'sample_site'
@@ -117,5 +118,28 @@ def file_name_no_ext(file_name):
     else:
         import posixpath
         raw_file_name = posixpath.split(file_name)[1].rpartition('.')[0]
-    
+
     return raw_file_name
+
+def jinja_datetime_format(time_str, fmt='%Y-%m-%d'):
+    """
+    Change datetime format with original format as following:
+    %Y-%m-%d %H:%M:%S %z
+    %Y-%m-%d %H:%M:%S
+
+    :param time_str: the date time represents in string format
+    :type time_str: str
+
+    :param fmt: format string
+    :type fmt: str
+
+    :return: the formatted date time representation using format string `fmt`
+    :rtype: str
+    """
+    try:
+        pd = datetime.strptime(
+            time_str, '%Y-%m-%d %H:%M:%S %z')
+    except ValueError:
+        pd = datetime.strptime(time_str, '%Y-%m-%d %H:%M:%S')
+
+    return pd.strftime(fmt)

@@ -193,6 +193,7 @@ class GenerateManager(object):
 
     def __template_helper(self, template_path, **kwargs):
         env = Environment()
+        env.filters['date'] = utility.jinja_datetime_format
         template_dir, template_name = os.path.split(template_path)
         env.loader = FileSystemLoader(template_dir)
         template = env.get_template(template_name)
