@@ -23,7 +23,7 @@ class Page(Parseable):
         # The solution is ugly here but the leading slash mark is needed
         # Call for improvement for this
         self._post_process_meta['url_dir'] = pure_file_name + os.sep
-        self._post_process_meta['url'] = os.sep + pure_file_name + os.sep
+        self._post_process_meta['url'] = '/' + pure_file_name + '/'
         self._post_process_meta['content'] = self.get_content()
         self._post_process_meta.update(fresh_meta)
 

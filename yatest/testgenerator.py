@@ -66,7 +66,7 @@ class SiteGenerationTestCase(unittest.TestCase):
       <div class="trigger">
         
           
-          <a class="page-link" href="\about\">about</a>
+          <a class="page-link" href="/about/">about</a>
           
         
       </div>
@@ -78,7 +78,7 @@ class SiteGenerationTestCase(unittest.TestCase):
 	<h1>Post list:</h1>
     <ul id="navigation">
     
-        <li><a href="post\2017\6\2\hello-world">Welcome to Cray!</a></li>
+        <li><a href="post/2017/6/2/hello-world">Welcome to Cray!</a></li>
     
     </ul>
 
@@ -112,7 +112,7 @@ class SiteGenerationTestCase(unittest.TestCase):
       <div class="trigger">
         
           
-          <a class="page-link" href="\about\">about</a>
+          <a class="page-link" href="/about/">about</a>
           
         
       </div>
@@ -155,7 +155,7 @@ class SiteGenerationTestCase(unittest.TestCase):
       <div class="trigger">
         
           
-          <a class="page-link" href="\about\">about</a>
+          <a class="page-link" href="/about/">about</a>
           
         
       </div>

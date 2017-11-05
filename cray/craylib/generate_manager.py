@@ -146,8 +146,8 @@ class GenerateManager(object):
                 except ValueError:
                     pd = datetime.strptime(per_meta['date'], '%Y-%m-%d %H:%M:%S')
 
-                url_dir = os.path.join('post', str(pd.year), str(pd.month), str(pd.day), \
-                    '-'.join(str(x) for x in per_meta['__file_name']))
+                url_dir = '/'.join(['post', str(pd.year), str(pd.month), str(pd.day), \
+                    '-'.join(str(x) for x in per_meta['__file_name'])])
                 url = os.path.join(url_dir, self.__default_file_name)
                 os.makedirs(os.path.join(self._abs_dir, url_dir))
                 file_path = os.path.join(self._abs_dir, url)
