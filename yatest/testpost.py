@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+'''test cases for post module'''
+
 import unittest
 import os
 

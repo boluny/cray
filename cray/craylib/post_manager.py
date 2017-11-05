@@ -30,16 +30,16 @@ class PostManager(object):
 
         if len(self.__params) == 1:
             if self.__params[0] == 'list':
-                self.list_all_post()
+                self.__posts_list = self.list_all_post()
+                print(*self.__posts_list, sep='\n')
                 exit(0)
             # For other command extension with one parameter
 
         assert len(self.__params) == 2
         if self.__params[0] == 'read':
-            this_post = post.Post(os.path.join(self.__post_dir, self.__params[1]))
-            if this_post.parse_file() == utility.RT.SUCCESS:
-                print(this_post.get_meta())
-                print(this_post.get_content())
+            meta, content = self.read_post(self.__params[1])
+            print(meta)
+            print(content)
         elif self.__params[0] == 'create':
             # file name goes like hello-world.md
             self.create(self.__params[1])
@@ -48,7 +48,24 @@ class PostManager(object):
 
     def list_all_post(self):
         '''print all files under _post dir'''
-        print(*os.listdir(self.__post_dir), sep='\n')
+        return os.listdir(self.__post_dir)
+
+    def read_post(self, file_name):
+        '''read specified post meta and content
+        :param file_name: specified file name
+        :type file_name: str
+        :returns: (meta, content)
+        :rtype: tuple (list, str)
+        ''' 
+        this_post = post.Post(os.path.join(self.__post_dir, file_name))
+        ret_list = [{}, '']
+        if this_post.parse_file() == utility.RT.SUCCESS:
+            ret_list[0] = this_post.get_meta()
+            ret_list[1] = this_post.get_content()
+        else:
+            print("error when parsing post", file_name)
+        
+        return tuple(ret_list)
 
     def create(self, file_name):
         '''Create the target file'''

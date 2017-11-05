@@ -9,3 +9,11 @@
 2017-07-14
 1. Add filter in jinja2 environment to add some common functionality to the template. 
 e.g. datetimeformat
+
+2017-11-05
+[X] Add test cases for main functions
+[ ] Add RSS feed
+[ ] Add public and private post mode
+[ ] Refactor CLI using argparse
+[ ] Minimum dependency on other libs, just Jinja2 and Markdown
+[ ] Flexiable definition layout and corresponding theme template
