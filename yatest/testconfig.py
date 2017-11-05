@@ -33,7 +33,7 @@ class ConfigLoadTestCase(unittest.TestCase):
         self.assertTrue('protocol' in confs)
         self.assertEqual(confs['protocol'], "http")
 
-        self.assertTrue('generated_path' in confs)
-        self.assertEqual(confs['generated_path'], "..")
+        self.assertTrue('generate_path' in confs)
+        self.assertEqual(confs['generate_path'], "..")
 
         self.assertFalse('page_number' in confs)

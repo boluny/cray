@@ -3,7 +3,8 @@
     "description": "demo site description", // This is the description of the site
     "url": "www.demo.com",
     "protocol": "http",
+    "theme": "simple",
     //'page_number': 5
-    "generated_path": ".."
+    "generate_path": ".."
 
 }
