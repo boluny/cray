@@ -4,6 +4,7 @@
 import codecs
 import os
 import shutil
+import timeit
 from datetime import datetime
 
 import markdown
@@ -51,6 +52,7 @@ class GenerateManager(object):
 
     def generate_site(self):
         '''The main function to generate the whole site'''
+        start = timeit.default_timer()
         if 'generate_path' not in self.__site_dict:
             _logger.info("Not specify the generate path, please check carefully")
 
@@ -107,7 +109,8 @@ class GenerateManager(object):
             posts_meta = self.generate_posts(site_template_path['post'], posts)
             self.generate_index(site_template_path['index'], posts_meta)
             utility.copy_subdir(tm.get_abs_path(), theme_subdir, self._abs_dir)
-            print("Site generation is finished!")
+            stop = timeit.default_timer()
+            print("Site generation is finished in %.3fs!" %  (stop - start) )
 
     def read_config(self, config_loader):
         self.__site_dict.update(config_loader.get_config())

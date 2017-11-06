@@ -15,7 +15,6 @@ class PostManager(object):
     def __init__(self, post_dir):
         self.__post_dir = post_dir
         self.__posts_list = []
-        self.__params = []
         _LOGGER.debug('post_dir: %s', post_dir)
 
     def parse_arg(self, params):
@@ -25,26 +24,28 @@ class PostManager(object):
         :returns: None
         """
 
-        self.__params = params
         _LOGGER.debug('params: %s', params)
 
-        if len(self.__params) == 1:
-            if self.__params[0] == 'list':
-                self.__posts_list = self.list_all_post()
-                print(*self.__posts_list, sep='\n')
-                exit(0)
+        if params.command_name == 'list':
+            self.__posts_list = self.list_all_post()
+            print(*self.__posts_list, sep='\n')
+            exit(0)
             # For other command extension with one parameter
 
-        assert len(self.__params) == 2
-        if self.__params[0] == 'read':
-            meta, content = self.read_post(self.__params[1])
-            print(meta)
-            print(content)
-        elif self.__params[0] == 'create':
+        if params.command_name == 'read':
+            meta, content = self.read_post(params.file_name)
+            if params.meta:
+                print(meta)
+            elif params.content:
+                print(content)
+            else:
+                print(meta)
+                print(content)
+        elif params.command_name == 'create':
             # file name goes like hello-world.md
-            self.create(self.__params[1])
-        elif self.__params[0] == 'delete':
-            self.delete(self.__params[1])
+            self.create(params.file_name)
+        elif params.command_name == 'delete':
+            self.delete(params.file_name)
 
     def list_all_post(self):
         '''print all files under _post dir'''

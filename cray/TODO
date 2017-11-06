@@ -14,6 +14,6 @@ e.g. datetimeformat
 [X] Add test cases for main functions
 [ ] Add RSS feed
 [ ] Add public and private post mode
-[ ] Refactor CLI using argparse
+[X] Refactor CLI using argparse
 [ ] Minimum dependency on other libs, just Jinja2 and Markdown
 [ ] Flexiable definition layout and corresponding theme template
