@@ -203,3 +203,39 @@ class GenerateManager(object):
         result = template.render(kwargs)
 
         return result
+
+    def generate_rss(self, posts):
+        '''
+        Generate site RSS feed which is compatible with RSS 2.0
+        (https://validator.w3.org/feed/docs/rss2.html)
+        :param posts: post in the site that will be included in the rss feed
+        :param posts: list
+
+        :returns: error status
+        :rtype: int
+        '''
+        header_template = '''
+        <?xml version="1.0" encoding="UTF-8" ?>
+        <rss version="2.0">
+        <channel>
+            <title>{0}</title>
+            <description>{1}</description>
+            <link>{2}</link>
+            <lastBuildDate>{3}</lastBuildDate>
+            <pubDate>{3}</pubDate>
+            <ttl>1800</ttl>
+        '''
+        item_template = '''
+            <item>
+                <title>{0}</title>
+                <description>{1}</description>
+                <link>{2}</link>
+                <guid isPermaLink="false">{3}</guid>
+                <pubDate>{4}</pubDate>
+            </item>
+        '''
+
+        footer = '''
+        </channel>
+        </rss>
+        '''

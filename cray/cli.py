@@ -99,7 +99,7 @@ def main(args=None):
 
     if not args:
         args = sys.argv
-        
+
     cray_parser = get_argparse()
     if len(args[1:]) == 0:
         cray_parser.print_help()
