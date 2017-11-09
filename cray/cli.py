@@ -97,6 +97,9 @@ def get_argparse():
 def main(args=None):
     '''Entry for cray'''
 
+    if not args:
+        args = sys.argv
+        
     cray_parser = get_argparse()
     if len(args[1:]) == 0:
         cray_parser.print_help()
