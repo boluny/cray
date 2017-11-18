@@ -4,6 +4,7 @@
 import codecs
 import os
 import shutil
+import textwrap
 import timeit
 from datetime import datetime
 
@@ -24,6 +25,7 @@ class GenerateManager(object):
     def __init__(self, root_dir):
         self._root_dir = root_dir
         self.__default_file_name = "index.html"
+        self.__rss_name = 'feed.xml'
         self.__site_dict = {}
         self._abs_dir = ""
         self._theme_dir = ""
@@ -108,6 +110,7 @@ class GenerateManager(object):
             self.generate_pages(site_template_path['page'])
             posts_meta = self.generate_posts(site_template_path['post'], posts)
             self.generate_index(site_template_path['index'], posts_meta)
+            self.generate_rss(None)
             utility.copy_subdir(tm.get_abs_path(), theme_subdir, self._abs_dir)
             stop = timeit.default_timer()
             print("Site generation is finished in %.3fs!" %  (stop - start) )
@@ -214,7 +217,7 @@ class GenerateManager(object):
         :returns: error status
         :rtype: int
         '''
-        header_template = '''
+        header_template = textwrap.dedent('''
         <?xml version="1.0" encoding="UTF-8" ?>
         <rss version="2.0">
         <channel>
@@ -224,8 +227,9 @@ class GenerateManager(object):
             <lastBuildDate>{3}</lastBuildDate>
             <pubDate>{3}</pubDate>
             <ttl>1800</ttl>
-        '''
-        item_template = '''
+            <generator>Cray</generator>
+        ''')
+        item_template = textwrap.dedent('''
             <item>
                 <title>{0}</title>
                 <description>{1}</description>
@@ -233,9 +237,22 @@ class GenerateManager(object):
                 <guid isPermaLink="false">{3}</guid>
                 <pubDate>{4}</pubDate>
             </item>
-        '''
+        ''')
 
-        footer = '''
+        footer = textwrap.dedent('''
         </channel>
         </rss>
-        '''
+        ''')
+        header_args = ('demo', 'site description', 'http://www.demo.com', '2017-06-02 22:22:22')
+        post_args = ('hello', 'hello description', 'http://www.demo.com/post/hello/', '342348', '2017-06-02 22:22:22')
+        world_args = ('world', 'world description', 'http://www.demo.com/post/world/', 'wwerlkslkdlfj', '2017-06-03 22:22:22')
+
+        header = header_template.format(*header_args).strip()
+
+        header += item_template.format(*post_args)
+        header += item_template.format(*world_args)
+        header += footer
+
+        rss_abs_path = os.path.join(self._abs_dir, self.__rss_name)
+        with open(rss_abs_path, 'w') as rss_fd:
+            rss_fd.write(header)
