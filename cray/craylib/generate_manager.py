@@ -2,10 +2,12 @@
 '''module for site generation class'''
 
 import codecs
+import html
 import os
 import shutil
 import textwrap
 import timeit
+import uuid
 from datetime import datetime
 
 import markdown
@@ -110,10 +112,10 @@ class GenerateManager(object):
             self.generate_pages(site_template_path['page'])
             posts_meta = self.generate_posts(site_template_path['post'], posts)
             self.generate_index(site_template_path['index'], posts_meta)
-            self.generate_rss(None)
+            self.generate_rss(posts_meta)
             utility.copy_subdir(tm.get_abs_path(), theme_subdir, self._abs_dir)
             stop = timeit.default_timer()
-            print("Site generation is finished in %.3fs!" %  (stop - start) )
+            print("Site generation is finished in %.3fs!" %  (stop - start))
 
     def read_config(self, config_loader):
         self.__site_dict.update(config_loader.get_config())
@@ -128,7 +130,7 @@ class GenerateManager(object):
         # use `not posts` rather than `len(posts)` to match PEP8
         if not posts or post_template_path == '':
             return []
-
+        
         posts_meta = []
         for post in posts:
             per_meta = {}
@@ -143,14 +145,13 @@ class GenerateManager(object):
                 per_meta['title'] = utility.trim_double_quotation_mark(per_meta['title'])
 
             # TODO: markdown parse
+            per_meta['__raw_content'] = post.get_content()
             per_meta['content'] = markdown.markdown(post.get_content())
+
             if 'date' in per_meta:
                 # TODO: which is more efficient?  regexp before or try...catch
                 # block
-                try:
-                    pd = datetime.strptime(per_meta['date'], '%Y-%m-%d %H:%M:%S %z')
-                except ValueError:
-                    pd = datetime.strptime(per_meta['date'], '%Y-%m-%d %H:%M:%S')
+                pd = utility.try_convert_date_str(per_meta['date'])
 
                 url_dir = '/'.join(['post', str(pd.year), str(pd.month), str(pd.day), \
                     '-'.join(str(x) for x in per_meta['__file_name'])])
@@ -171,7 +172,7 @@ class GenerateManager(object):
         return posts_meta
 
     def generate_pages(self, page_template_path):
-        if len(self.__site_dict['pages']) == 0 or page_template_path == '':
+        if not self.__site_dict['pages'] or page_template_path == '':
             return []
 
         for page in self.__site_dict['pages']:
@@ -243,14 +244,19 @@ class GenerateManager(object):
         </channel>
         </rss>
         ''')
-        header_args = ('demo', 'site description', 'http://www.demo.com', '2017-06-02 22:22:22')
-        post_args = ('hello', 'hello description', 'http://www.demo.com/post/hello/', '342348', '2017-06-02 22:22:22')
-        world_args = ('world', 'world description', 'http://www.demo.com/post/world/', 'wwerlkslkdlfj', '2017-06-03 22:22:22')
+        full_url = self.__site_dict['protocol'] + '://' + self.__site_dict['url']
+        header_args = (self.__site_dict['title'], self.__site_dict['description'], \
+        full_url, str(datetime.now()))
 
         header = header_template.format(*header_args).strip()
 
-        header += item_template.format(*post_args)
-        header += item_template.format(*world_args)
+        for post in posts:
+            content = html.escape(post['__raw_content'])
+            full_post_url = full_url + '/' + post['url']
+            post_args = (post['title'], content, full_post_url, \
+            uuid.uuid3(uuid.NAMESPACE_URL, post['url']), post['date'])
+            header += item_template.format(*post_args)
+
         header += footer
 
         rss_abs_path = os.path.join(self._abs_dir, self.__rss_name)

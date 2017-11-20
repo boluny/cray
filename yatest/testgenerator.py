@@ -37,10 +37,12 @@ class SiteGenerationTestCase(unittest.TestCase):
         about_path = os.path.join(SITE_DIR, 'about', 'index.html')
         hello_post_path = os.path.join(SITE_DIR, 'post', '2017', '6', '2', 'hello-world', \
         'index.html')
+        rss_path = os.path.join(SITE_DIR, 'feed.xml')
 
         self.assertTrue(os.path.exists(index_path))
         self.assertTrue(os.path.exists(about_path))
         self.assertTrue(os.path.exists(hello_post_path))
+        self.assertTrue(os.path.exists(rss_path))
 
         index_content = r'''<html>
 <head>
@@ -175,6 +177,14 @@ class SiteGenerationTestCase(unittest.TestCase):
 </body>
 </html>'''
 
+        rss_title_regex = '<title>Demo</title>'
+        rss_description_regex = '<description>demo site description</description>'
+        rss_item_title_regex = '<title>Welcome to Cray!</title>'
+        rss_item_description_regex = r'<description>\s+hello world!</description>'
+        rss_item_link_regex = r'<link>http://www.demo.com/post/2017/6/2/hello-world</link>'
+        rss_item_guid_regex = r'<guid isPermaLink=\"false\">5876f9d8-bd18-3935-9d2f-5dc36c00ae5f</guid>'
+        rss_item_pubdate_regex = r'<pubDate>2017-06-02 22:22:22</pubDate>\s+</item>'
+        self.maxDiff = None
         with open(index_path) as index_fd:
             self.assertEqual(index_content, index_fd.read())
 
@@ -183,6 +193,16 @@ class SiteGenerationTestCase(unittest.TestCase):
 
         with open(hello_post_path) as hello_fd:
             self.assertEqual(hello_content, hello_fd.read())
+
+        with open(rss_path) as rss_fd:
+            cotent = rss_fd.read()
+            self.assertRegex(cotent, rss_title_regex)
+            self.assertRegex(cotent, rss_description_regex)
+            self.assertRegex(cotent, rss_item_title_regex)
+            self.assertRegex(cotent, rss_item_description_regex)
+            self.assertRegex(cotent, rss_item_link_regex)
+            self.assertRegex(cotent, rss_item_guid_regex)
+            self.assertRegex(cotent, rss_item_pubdate_regex)
 
         if os.path.exists(SITE_DIR):
             shutil.rmtree(SITE_DIR, ignore_errors=True)

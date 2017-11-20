@@ -15,6 +15,7 @@ def get_test_suites():
     suite.addTest(UtilityFullGeneratePathTestCase())
     suite.addTest(UtilityNameConflictTestCase())
     suite.addTest(UtilityFileNameNoExtTestCase())
+    suite.addTest(UtilityTryConvertDateStrTestCase())
 
     return suite
 
@@ -75,3 +76,23 @@ class UtilityFileNameNoExtTestCase(unittest.TestCase):
 
         if os.name == 'nt':
             self.assertEqual('testb', test_module.file_name_no_ext(file_b))
+
+class UtilityTryConvertDateStrTestCase(unittest.TestCase):
+    '''Test case for converting time string to datetime object'''
+    def runTest(self):
+        '''Run test'''
+        from datetime import datetime, timezone, timedelta
+
+        time_str1='2013-06-19 15:26 +0800'
+        time_object1 = datetime(2013, 6, 19, 15, 26, tzinfo=timezone(timedelta(0, 28800)))
+        self.assertEqual(time_object1, test_module.try_convert_date_str(time_str1))
+
+        time_str2='2013-06-19 15:26:27 +0800'
+        time_object2 = datetime(2013, 6, 19, 15, 26, 27, tzinfo=timezone(timedelta(0, 28800)))
+        self.assertEqual(time_object2, test_module.try_convert_date_str(time_str2))
+
+        time_str3='2013-06-19 15:26:27'
+        time_object3 = datetime(2013, 6, 19, 15, 26, 27)
+        self.assertEqual(time_object3, test_module.try_convert_date_str(time_str3))
+
+

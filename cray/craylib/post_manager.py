@@ -57,7 +57,7 @@ class PostManager(object):
         :type file_name: str
         :returns: (meta, content)
         :rtype: tuple (list, str)
-        ''' 
+        '''
         this_post = post.Post(os.path.join(self.__post_dir, file_name))
         ret_list = [{}, '']
         if this_post.parse_file() == utility.RT.SUCCESS:
@@ -65,7 +65,7 @@ class PostManager(object):
             ret_list[1] = this_post.get_content()
         else:
             print("error when parsing post", file_name)
-        
+
         return tuple(ret_list)
 
     def create(self, file_name):

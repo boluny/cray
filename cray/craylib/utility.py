@@ -136,10 +136,29 @@ def jinja_datetime_format(time_str, fmt='%Y-%m-%d'):
     :return: the formatted date time representation using format string `fmt`
     :rtype: str
     """
-    try:
-        pd = datetime.strptime(
-            time_str, '%Y-%m-%d %H:%M:%S %z')
-    except ValueError:
-        pd = datetime.strptime(time_str, '%Y-%m-%d %H:%M:%S')
+    my_datetime = try_convert_date_str(time_str)
 
-    return pd.strftime(fmt)
+    return my_datetime.strftime(fmt)
+
+def try_convert_date_str(time_str):
+    """
+    Convert time representation in string to Python datetime object.
+
+    :param time_str: the date time represents in string format
+    :type time_str: str
+
+    :return: datetime object corresponding to the string representation
+    :rtype: str
+    """
+
+    formats = ['%Y-%m-%d %H:%M:%S %z', '%Y-%m-%d %H:%M:%S', '%Y-%m-%d %H:%M %z']
+    time_obj = None
+    for a_format in formats:
+        try:
+            time_obj = datetime.strptime(time_str, a_format)
+        except:
+            pass
+        else:
+            return time_obj
+
+    raise ValueError
