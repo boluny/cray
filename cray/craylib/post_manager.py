@@ -87,6 +87,17 @@ date: %s +0800
 
 content goes here
 '''
+
+        content_public = \
+'''---
+layout: post
+title: "%s"
+public: true
+date: %s +0800
+---
+
+content goes here
+'''
         # date e.g. 2015-09-22 11:09:00
         with open(full_path, 'w', encoding='utf-8') as post_fd:
             post_fd.write(textwrap.dedent(content) % \
@@ -110,10 +121,13 @@ content goes here
         os.remove(file_abs_path)
         print('Successfully remove post', file_name)
 
-    def get_all_posts(self):
+    def get_all_posts(self, public=True):
         '''
         Get all the posts' content including meta and content.
-        :returns: -> list
+        :param public: indicate if get all posts or just posts marked as public
+        :param type: bool
+        :returns: the post list
+        :rtype: list
         '''
         post_list = []
         files = os.listdir(self.__post_dir)
@@ -121,6 +135,11 @@ content goes here
             if file.endswith('.md') or file.endswith('.markdown'):
                 _post = post.Post(os.path.join(self.__post_dir, file))
                 if _post.parse_file() == utility.RT.SUCCESS:
-                    post_list.append(_post)
+                    meta = _post.get_meta()
+                    if public:
+                        if 'public' in meta and utility.is_yes(meta['public']):
+                            post_list.append(_post)
+                    else:
+                        post_list.append(_post)
 
         return post_list

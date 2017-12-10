@@ -162,3 +162,17 @@ def try_convert_date_str(time_str):
             return time_obj
 
     raise ValueError
+
+def is_yes(indicator):
+    """
+    Check if `indicator`represents positive state
+
+    :param indicator: the bool literal like 'y', 'yes', 'true' and 'True'
+    :type indicator: str
+
+    :return: bool value to indicate positive or not 
+    :rtype: bool
+    """
+    assert(type(indicator) == str)
+    value_list = ('y', 'yes', 'true')
+    return indicator.lower() in value_list

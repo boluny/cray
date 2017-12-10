@@ -26,8 +26,9 @@ class PostGenerateTestCase(unittest.TestCase):
         should_meta = {'title': r'"Welcome to Cray!"',
                        'layout': 'post',
                        'date': '2017-06-02 22:22:22',
-                       'categories': 'demo',
-                       '__file_name': ['hello', 'world']
+                       'category': 'demo',
+                       'public': 'true',
+                       '__file_name': ['hello', 'world'],
                       }
         self.assertFalse(p_non_existence.is_existed())
 

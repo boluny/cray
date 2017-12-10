@@ -16,6 +16,7 @@ def get_test_suites():
     suite.addTest(UtilityNameConflictTestCase())
     suite.addTest(UtilityFileNameNoExtTestCase())
     suite.addTest(UtilityTryConvertDateStrTestCase())
+    suite.addTest(UtilityIsYesTestCase())
 
     return suite
 
@@ -94,5 +95,34 @@ class UtilityTryConvertDateStrTestCase(unittest.TestCase):
         time_str3='2013-06-19 15:26:27'
         time_object3 = datetime(2013, 6, 19, 15, 26, 27)
         self.assertEqual(time_object3, test_module.try_convert_date_str(time_str3))
+
+
+class UtilityIsYesTestCase(unittest.TestCase):
+    '''Test case for indicate if a string literal is true or false'''
+    def runTest(self):
+        '''Run test'''
+
+        str1 = 'y'
+        self.assertTrue(test_module.is_yes(str1))
+
+        str2 = 'yes'
+        self.assertTrue(test_module.is_yes(str2))
+
+        str3 = 'Y'
+        self.assertTrue(test_module.is_yes(str3))
+
+        str4 = 'Yes'
+        self.assertTrue(test_module.is_yes(str4))
+
+        str5 = 'true'
+        self.assertTrue(test_module.is_yes(str5))
+
+        str6 = 'True'
+        self.assertTrue(test_module.is_yes(str6))
+
+        str7 = 'no'
+        self.assertFalse(test_module.is_yes(str7))
+
+
 
 

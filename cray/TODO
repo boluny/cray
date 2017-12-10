@@ -12,7 +12,7 @@ e.g. datetimeformat
 
 2017-11-05
 [X] Add test cases for main functions
-[ ] Add RSS feed
+[X] Add RSS feed
 [ ] Add public and private post mode
 [X] Refactor CLI using argparse
 [ ] Minimum dependency on other libs, just Jinja2 and Markdown
