@@ -9,6 +9,7 @@ import textwrap
 import timeit
 import uuid
 from datetime import datetime
+from concurrent.futures import ThreadPoolExecutor
 
 import markdown
 from jinja2 import FileSystemLoader
@@ -106,16 +107,37 @@ class GenerateManager(object):
 
         if site_template_path is not None:
             # TODO: any error after clear the site is disallowed,
-            # so careful check should be done before this segment
+            # so careful check should be done before self segment
+
+            drafts = []
             if self.__check_validation():
                 self.__clear_site()
-            self.generate_pages(site_template_path['page'])
-            posts_meta = self.generate_posts(site_template_path['post'], posts)
-            self.generate_index(site_template_path['index'], posts_meta)
-            self.generate_rss(posts_meta)
+            page_drafts = self.generate_pages(site_template_path['page'])
+            drafts.extend(page_drafts)
+
+            post_drafts, posts_meta = self.generate_posts(site_template_path['post'], posts)
+            drafts.extend(post_drafts)
+
+            index_drafts = self.generate_index(site_template_path['index'], posts_meta)
+            drafts.extend(index_drafts)
+            
+            rss_drafts = self.generate_rss(posts_meta)
+            drafts.extend(rss_drafts)
+            self.write_disk(drafts)
+
             utility.copy_subdir(tm.get_abs_path(), theme_subdir, self._abs_dir)
             stop = timeit.default_timer()
             print("Site generation is finished in %.3fs!" %  (stop - start))
+
+    def write_disk(self, drafts):
+        def print_future_result(future):
+            print(future.result())
+
+        with ThreadPoolExecutor(max_workers=4) as executor:
+            for draft in drafts:
+                future = executor.submit(self.__writer_helper, draft.get_file_path(),\
+                draft.get_content())
+                future.add_done_callback(print_future_result)
 
     def read_config(self, config_loader):
         self.__site_dict.update(config_loader.get_config())
@@ -126,12 +148,13 @@ class GenerateManager(object):
         Generate post HTML pages using the passed in template and posts sequence.\n
         post_template_path|str: the template path\n
         posts|list: post sequence which contains all posts metadata and content\n
-        """
+        """     
         # use `not posts` rather than `len(posts)` to match PEP8
         if not posts or post_template_path == '':
-            return []
+            return [], []
         
         posts_meta = []
+        writables = []
         for post in posts:
             per_meta = {}
             # Delegate the metadata from post itself to the tempoary containers
@@ -157,23 +180,26 @@ class GenerateManager(object):
                     '-'.join(str(x) for x in per_meta['__file_name'])])
                 url = os.path.join(url_dir, self.__default_file_name)
                 os.makedirs(os.path.join(self._abs_dir, url_dir))
-                file_path = os.path.join(self._abs_dir, url)
+                #file_path = os.path.join(self._abs_dir, url)
 
                 result = self.__template_helper(post_template_path, \
                 post=per_meta, site=self.__site_dict)
-                with codecs.open(file_path, 'w', 'utf-8') as post_fd:
-                    post_fd.write(result)
-
+                #with codecs.open(file_path, 'w', 'utf-8') as post_fd:
+                #    post_fd.write(result)
+                w = Writable(url, result)
+                writables.append(w)
                 per_meta['url'] = url_dir
                 posts_meta.append(per_meta)
             else:
                 _logger.warning("Cannot find date information for post %s", per_meta['title'])
 
-        return posts_meta
+        print("Successfully parse all posts!")
+        return writables, posts_meta
 
     def generate_pages(self, page_template_path):
+        writables = []
         if not self.__site_dict['pages'] or page_template_path == '':
-            return []
+            return writables
 
         for page in self.__site_dict['pages']:
             # TODO: markdown parser add TOC support
@@ -183,20 +209,28 @@ class GenerateManager(object):
             url_dir = page['url_dir']
             url = os.path.join(url_dir, self.__default_file_name)
             os.makedirs(os.path.join(self._abs_dir, url_dir))
-            file_path = os.path.join(self._abs_dir, url)
+            #file_path = os.path.join(self._abs_dir, url)
 
             result = self.__template_helper(page_template_path, page=page, site=self.__site_dict)
-            with codecs.open(file_path, 'w', 'utf-8') as post_fd:
-                post_fd.write(result)
+            #with codecs.open(file_path, 'w', 'utf-8') as post_fd:
+            #    post_fd.write(result)
+            writables.append(Writable(url, result))
+
+        print("Successfully parse all pages!")
+        return writables
 
 
     def generate_index(self, index_template_path, posts_meta):
-        file_path = os.path.join(self._abs_dir, self.__default_file_name)
+        writeables = []
+        #file_path = os.path.join(self._abs_dir, self.__default_file_name)
         result = self.__template_helper(index_template_path, posts=posts_meta, \
         site=self.__site_dict)
 
-        with codecs.open(file_path, 'w', 'utf-8') as index_fd:
-            index_fd.write(result)
+        #with codecs.open(file_path, 'w', 'utf-8') as index_fd:
+        #    index_fd.write(result)
+        writeables.append(Writable(self.__default_file_name, result))
+        print("Successfully parse all indexes!")
+        return writeables
 
     def __template_helper(self, template_path, **kwargs):
         env = Environment()
@@ -207,6 +241,15 @@ class GenerateManager(object):
         result = template.render(kwargs)
 
         return result
+
+    def __writer_helper(self, rel_path, content):
+        abs_path = os.path.join(self._abs_dir, rel_path)
+        try:
+            with codecs.open(abs_path, 'w', 'utf-8') as fd:
+                fd.write(content)
+            return "Succeesfully write to {0}".format(rel_path)
+        except:
+            return "Faild to write to {0}".format(rel_path)
 
     def generate_rss(self, posts):
         '''
@@ -259,6 +302,23 @@ class GenerateManager(object):
 
         header += footer
 
-        rss_abs_path = os.path.join(self._abs_dir, self.__rss_name)
-        with open(rss_abs_path, 'w') as rss_fd:
-            rss_fd.write(header)
+        #rss_abs_path = os.path.join(self._abs_dir, self.__rss_name)
+        #with open(rss_abs_path, 'w') as rss_fd:
+        #    rss_fd.write(header)
+        writables = []
+        writables.append(Writable(self.__rss_name, header))
+
+        print("Successfully parse all atom files!")
+
+        return writables
+
+class Writable(object):
+    def __init__(self, file_path, content):
+        self.__file_path = file_path
+        self.__content = content
+    
+    def get_file_path(self):
+        return self.__file_path
+
+    def get_content(self):
+        return self.__content

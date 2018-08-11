@@ -121,10 +121,10 @@ content goes here
         os.remove(file_abs_path)
         print('Successfully remove post', file_name)
 
-    def get_all_posts(self, public=True):
+    def get_all_posts(self, only_public=True):
         '''
         Get all the posts' content including meta and content.
-        :param public: indicate if get all posts or just posts marked as public
+        :param only_public: indicate if get all posts or just posts marked as public
         :param type: bool
         :returns: the post list
         :rtype: list
@@ -136,7 +136,7 @@ content goes here
                 _post = post.Post(os.path.join(self.__post_dir, file))
                 if _post.parse_file() == utility.RT.SUCCESS:
                     meta = _post.get_meta()
-                    if public:
+                    if only_public:
                         if 'public' in meta and utility.is_yes(meta['public']):
                             post_list.append(_post)
                     else:

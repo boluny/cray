@@ -6,6 +6,10 @@ import argparse
 import os
 import sys
 import textwrap
+import pathlib
+
+# for debug to find the right path
+sys.path.append(str(pathlib.Path(__file__).parent.parent.resolve()))
 
 from cray.craylib.post_manager import PostManager
 from cray.craylib.generate_manager import GenerateManager

@@ -39,7 +39,8 @@ class PostManagerReadTestCase(unittest.TestCase):
         should_meta = {'title': r'"Welcome to Cray!"',
                        'layout': 'post',
                        'date': '2017-06-02 22:22:22',
-                       'categories': 'demo',
+                       'category': 'demo',
+                       'public': 'true',
                        '__file_name': ['hello', 'world']
                       }
         self.assertEqual(should_meta, meta)
