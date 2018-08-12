@@ -110,8 +110,8 @@ class GenerateManager(object):
             # so careful check should be done before self segment
 
             drafts = []
-            if self.__check_validation():
-                self.__clear_site()
+            # if self.__check_validation():
+            #     self.__clear_site()
             page_drafts = self.generate_pages(site_template_path['page'])
             drafts.extend(page_drafts)
 
@@ -120,7 +120,7 @@ class GenerateManager(object):
 
             index_drafts = self.generate_index(site_template_path['index'], posts_meta)
             drafts.extend(index_drafts)
-            
+
             rss_drafts = self.generate_rss(posts_meta)
             drafts.extend(rss_drafts)
             self.write_disk(drafts)
@@ -179,7 +179,7 @@ class GenerateManager(object):
                 url_dir = '/'.join(['post', str(pd.year), str(pd.month), str(pd.day), \
                     '-'.join(str(x) for x in per_meta['__file_name'])])
                 url = os.path.join(url_dir, self.__default_file_name)
-                os.makedirs(os.path.join(self._abs_dir, url_dir))
+                #os.makedirs(os.path.join(self._abs_dir, url_dir))
                 #file_path = os.path.join(self._abs_dir, url)
 
                 result = self.__template_helper(post_template_path, \
@@ -208,7 +208,7 @@ class GenerateManager(object):
 
             url_dir = page['url_dir']
             url = os.path.join(url_dir, self.__default_file_name)
-            os.makedirs(os.path.join(self._abs_dir, url_dir))
+            #os.makedirs(os.path.join(self._abs_dir, url_dir))
             #file_path = os.path.join(self._abs_dir, url)
 
             result = self.__template_helper(page_template_path, page=page, site=self.__site_dict)
@@ -222,12 +222,15 @@ class GenerateManager(object):
 
     def generate_index(self, index_template_path, posts_meta):
         writeables = []
-        #file_path = os.path.join(self._abs_dir, self.__default_file_name)
+
+        def get_date_field(elem):
+            return elem['date']
+            
+        posts_meta.sort(key=get_date_field, reverse=True)
+
         result = self.__template_helper(index_template_path, posts=posts_meta, \
         site=self.__site_dict)
 
-        #with codecs.open(file_path, 'w', 'utf-8') as index_fd:
-        #    index_fd.write(result)
         writeables.append(Writable(self.__default_file_name, result))
         print("Successfully parse all indexes!")
         return writeables
@@ -244,6 +247,8 @@ class GenerateManager(object):
 
     def __writer_helper(self, rel_path, content):
         abs_path = os.path.join(self._abs_dir, rel_path)
+        if not os.path.exists(os.path.dirname(abs_path)):
+            os.makedirs(os.path.dirname(abs_path), exist_ok=True)
         try:
             with codecs.open(abs_path, 'w', 'utf-8') as fd:
                 fd.write(content)

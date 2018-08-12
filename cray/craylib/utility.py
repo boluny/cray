@@ -101,6 +101,8 @@ def copy_subdir(root_dir, subdirs, dest_dir):
     for sub in subdirs:
         sub_abs_path = os.path.join(root_dir, sub)
         dest_sub_abs_path = os.path.join(dest_dir, sub)
+        if os.path.exists(dest_sub_abs_path):
+            shutil.rmtree(dest_sub_abs_path)
         if os.path.exists(sub_abs_path):
             shutil.copytree(sub_abs_path, dest_sub_abs_path)
 

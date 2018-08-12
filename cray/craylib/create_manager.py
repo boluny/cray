@@ -37,6 +37,7 @@ layout: post
 title: "hello world!"
 categories: test
 type: tech
+public: true
 date: 2015-09-22 11:09:00 +0800
 ---
 hello world
