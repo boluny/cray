@@ -137,7 +137,3 @@ class UtilityIsYesTestCase(unittest.TestCase):
 
         str7 = 'no'
         self.assertFalse(test_module.is_yes(str7))
-
-
-
-

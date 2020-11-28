@@ -301,9 +301,10 @@ class GenerateManager(object):
 
         for post in posts:
             content = html.escape(post['__raw_content'])
-            full_post_url = full_url + '/' + post['url']
-            post_args = (post['title'], content, full_post_url, \
-            uuid.uuid3(uuid.NAMESPACE_URL, post['url']), post['date'])
+            title = html.escape(post['title'])
+            full_post_url = html.escape(full_url + '/' + self.__site_dict['base'] + post['url'])
+            post_args = (title, content, full_post_url,
+                uuid.uuid3(uuid.NAMESPACE_URL, post['url']), post['date'])
             header += item_template.format(*post_args)
 
         header += footer
