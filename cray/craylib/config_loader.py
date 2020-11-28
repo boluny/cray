@@ -6,6 +6,7 @@
 import json
 import os
 
+
 # TODO: could adopt singelon pattern
 class ConfigLoader(object):
     '''Class for load the site configuration'''

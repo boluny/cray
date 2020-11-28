@@ -15,11 +15,13 @@ PAGE_DIR = '_page'
 THEME_DIR = '_theme'
 GENERATED_SITE_DIR = '_site'
 
+
 class RT(Enum):
     '''Representation for return value, deprecate it is in consideration'''
     SUCCESS = 1
     FAILURE = 2
     UNKNOWN = 3
+
 
 def is_valid_site(root_dir):
     '''Check if the site contains sub directories '_post', '_page', '_theme'''
@@ -28,11 +30,12 @@ def is_valid_site(root_dir):
     theme_dir = os.path.join(root_dir, '_theme')
     config_file = os.path.join(root_dir, 'config.json')
 
-    if os.path.exists(post_dir) and os.path.exists(page_dir) and os.path.exists(theme_dir) \
-    and os.path.exists(config_file):
+    if os.path.exists(post_dir) and os.path.exists(page_dir) \
+        and os.path.exists(theme_dir) and os.path.exists(config_file):
         return True
 
     return False
+
 
 def get_logger(name):
     '''Return a logger for debug/log stuff'''
@@ -57,6 +60,7 @@ def get_logger(name):
 
     return logger
 
+
 def start_server(root_dir):
     '''start the server in the directory specified by function argument.
     root_dir:string the absolute path of a directory.
@@ -70,23 +74,40 @@ def start_server(root_dir):
     print("serving at 127.0.0.1:%d" % _host_port)
     httpd.serve_forever()
 
+
 def trim_double_quotation_mark(original_str):
     '''Remove the double quotation at leading and last position'''
     if not original_str:
         return ''
-    
+
     if original_str.startswith('"') and original_str.endswith('"'):
         return original_str[1:-1]
 
     return original_str
 
+
 def full_generate_path(root, conf_dict):
+    '''Return the absolute path when configured "generate_path" in configuration file,
+    else using the default directory name "_site"
+    absolute path: <generate_path>/[_site|<site_name]/<base>
+    '''
+    generate_path = conf_dict['generate_path'] if 'generate_path' in conf_dict else '.'
+    site_name = conf_dict['site_name'] if 'site_name' in conf_dict else '_site'
+    base = conf_dict['base'] if 'base' in conf_dict else ''
+    # In case an absolute path is referred
+    if len(base) > 0 and base[0] == '/':
+        base = base[1:]
+    return os.path.normpath(os.path.join(root, generate_path, site_name, base))
+
+
+def full_preview_path(root, conf_dict):
     '''Return the absolute path when configured "generate_path" in configuration file,
     else using the default directory name "_site"
     '''
     generate_path = conf_dict['generate_path'] if 'generate_path' in conf_dict else '.'
     site_name = conf_dict['site_name'] if 'site_name' in conf_dict else '_site'
-    return os.path.join(root, generate_path, site_name)
+    return os.path.normpath(os.path.join(root, generate_path, site_name))
+
 
 def copy_subdir(root_dir, subdirs, dest_dir):
     '''Copy subdirectories from source directory to destination directory
@@ -106,9 +127,11 @@ def copy_subdir(root_dir, subdirs, dest_dir):
         if os.path.exists(sub_abs_path):
             shutil.copytree(sub_abs_path, dest_sub_abs_path)
 
+
 def name_conflict(src_str_list, dest_str_list):
     '''Check if the same element in the src_str_list and dest_str_list'''
     return any([a_str in dest_str_list for a_str in src_str_list])
+
 
 def file_name_no_ext(file_name):
     '''Get the filename without its extension'''
@@ -122,6 +145,7 @@ def file_name_no_ext(file_name):
         raw_file_name = posixpath.split(file_name)[1].rpartition('.')[0]
 
     return raw_file_name
+
 
 def jinja_datetime_format(time_str, fmt='%Y-%m-%d'):
     """
@@ -141,6 +165,7 @@ def jinja_datetime_format(time_str, fmt='%Y-%m-%d'):
     my_datetime = try_convert_date_str(time_str)
 
     return my_datetime.strftime(fmt)
+
 
 def try_convert_date_str(time_str):
     """
@@ -164,6 +189,7 @@ def try_convert_date_str(time_str):
             return time_obj
 
     raise ValueError
+
 
 def is_yes(indicator):
     """

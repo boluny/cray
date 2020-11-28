@@ -39,18 +39,33 @@ class UtilityTrimDoubleQuotationMarkTestCase(unittest.TestCase):
 
 class UtilityFullGeneratePathTestCase(unittest.TestCase):
     '''Test case for post generation'''
-    def runTest(self):
+    def testBasic(self):
         '''Run test'''
         root = '/home/byuan'
         conf = {}
         self.assertEqual(os.path.join(root, '.', '_site'), \
         test_module.full_generate_path(root, conf))
         conf['generate_path'] = '..'
-        self.assertEqual(os.path.join(root, conf['generate_path'], '_site'), \
+        self.assertEqual(os.path.normpath(os.path.join(root, conf['generate_path'], '_site')), \
         test_module.full_generate_path(root, conf))
         conf['site_name'] = 'boluny.github.com'
-        self.assertEqual(os.path.join(root, conf['generate_path'], conf['site_name']), \
-        test_module.full_generate_path(root, conf))
+        self.assertEqual(
+            os.path.normpath(os.path.join(root, conf['generate_path'], conf['site_name'])),
+            test_module.full_generate_path(root, conf))
+
+    def testBaseConfigured(self):
+        root = '/home/byuan'
+        conf = {}
+        conf['base'] = 'blog'
+        self.assertEqual(os.path.normpath(os.path.join(root, '.', "_site", conf['base'])), \
+            test_module.full_generate_path(root, conf))
+
+    def testBaseAbsoluteConfigured(self):
+        root = '/home/byuan'
+        conf = {}
+        conf['base'] = '/blog'
+        self.assertEqual(os.path.normpath(os.path.join(root, '.', "_site", 'blog')), \
+            test_module.full_generate_path(root, conf))
 
 class UtilityNameConflictTestCase(unittest.TestCase):
     '''Test case for post generation'''

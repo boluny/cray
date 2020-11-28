@@ -71,6 +71,7 @@ class GenerateManager(object):
         self.set_post_dir(os.path.join(self._root_dir, utility.POST_DIR))
         self.set_page_dir(os.path.join(self._root_dir, utility.PAGE_DIR))
         self.set_tar_dir(utility.full_generate_path(self._root_dir, self.__site_dict))
+        print("Generate site to {}".format(self._abs_dir))
 
         # main logic:
         # 1.  read theme template

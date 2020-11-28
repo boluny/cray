@@ -15,21 +15,21 @@ from cray.craylib.post_manager import PostManager
 from cray.craylib.generate_manager import GenerateManager
 from cray.craylib.create_manager import CreateManager
 from cray.craylib.config_loader import ConfigLoader
-from cray.craylib.utility import start_server, is_valid_site, full_generate_path
+from cray.craylib.utility import start_server, is_valid_site, full_preview_path
 
 
 def usage():
     '''Print usage message'''
     usage_msg = textwrap.dedent(r'''
     Usage:
-    cray [subcommand] [behavior] [params...] 
+    cray [subcommand] [behavior] [params...]
 
-    Subcommand could be one of "init", "post", "page", "generate", "preview", all subcommands 
+    Subcommand could be one of "init", "post", "page", "generate", "preview", all subcommands
     should be executed under the root of a site except for "init"
 
     for each subcommand, there are some allowed behaviors to use.
     currently, only behaviors for subcommand "post" are implemented, they are:
-    
+
     cray post list
     cray post read <file>
     cray post create <file>
@@ -46,11 +46,13 @@ def usage():
     ''')
     print(usage_msg)
 
+
 class DefaultHelpParser(argparse.ArgumentParser):
     def error(self, message):
         sys.stderr.write('error: %s\n' % message)
         self.print_help()
         sys.exit(2)
+
 
 def get_argparse():
     parser = DefaultHelpParser(prog='cray', description='homebrew static site generator')
@@ -110,7 +112,7 @@ def main(args=None):
     # parser.print_usage() # for just the usage line
         cray_parser.exit()
     args = cray_parser.parse_args()
-    #print(vars(args))
+    # print(vars(args))
 
     if args.module_name == 'init':
         create_manager = CreateManager(os.getcwd(), args.site_name)
@@ -119,10 +121,10 @@ def main(args=None):
 
         sys.exit(0)
 
-    # operations other than 'create' should under the site prototype root directory
+    # operations other than 'create' should under the site prototype root dir
     if not is_valid_site(os.getcwd()):
         print("Not a valid site structure, please check if this directory contains", \
-        "required folders and files.")
+            "required folders and files.")
         exit(-1)
 
     conf_loader = ConfigLoader(os.getcwd())
@@ -147,11 +149,10 @@ def main(args=None):
         # call HTTP module to start a server on the site directory
         # python -m http.server 8000
 
-        start_server(full_generate_path(os.getcwd(), conf_loader.get_config()))
+        start_server(full_preview_path(os.getcwd(), conf_loader.get_config()))
 
     elif args.module_name == 'deploy':
         pass
-
 
 
 if __name__ == '__main__':

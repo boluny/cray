@@ -30,7 +30,7 @@ Usage
 
 .. code-block:: bash 
 
-    $ pip install .
+    $ pip install -r requirements.txt
 
 3. Execute following commands:
 

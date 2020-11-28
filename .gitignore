@@ -255,3 +255,6 @@ cli.py
 .vscode/
 demo/
 _site/
+.idea/
+/venv/
+.eggs/

@@ -1,22 +1,23 @@
 # -*- coding: utf-8 -*-
-'''module for site creation class'''
+"""module for site creation class"""
 
 import os
 import textwrap
 from datetime import date
 
+
 class CreateManager(object):
 
     def __init__(self, cur_dir, site_name):
-        '''
+        """
         A creator manager responsible to create new site
         maybe builder pattern is better?
-        '''
+        """
         # TODO: Validate the passed in site name does not have illegal characters
         self.__site_root = os.path.join(cur_dir, site_name)
 
     def create(self):
-        '''the public interface to create the site'''
+        """the public interface to create the site"""
         if self.check_site_exist():
             return False
 
@@ -161,7 +162,6 @@ demo `about` page
             with open(os.path.join(default_theme_dir, file_name), 'w') as _fd:
                 _fd.write(textwrap.dedent(content))
 
-
     def create_config_file(self):
         config_content = '''
 {
@@ -174,10 +174,9 @@ demo `about` page
     "include_theme_subdir":["js","css","image"]
 }        
         '''
-        # "genrate_path" could be configured as ".."
+        # "generate_path" could be configured as ".."
         with open(os.path.join(self.__site_root, 'config.json'), 'w') as config_fd:
             config_fd.write(config_content)
-
 
     def check_site_exist(self):
         return os.path.exists(self.__site_root)
