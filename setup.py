@@ -29,7 +29,7 @@ classifiers = [
 setup(
     name="cray",
     packages=find_packages(exclude=['yatest']),
-    version="0.0.2",
+    version="0.0.3",
     # package_data={"jsonschema": ["schemas/*.json"]},
     setup_requires=["Jinja2>=2.8", "Markdown>=2.6.8"],
     test_suite="yatest",
